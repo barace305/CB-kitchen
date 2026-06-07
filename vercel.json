@@ -1,0 +1,15 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/member",
+      "destination": "/members/",
+      "permanent": true
+    },
+    {
+      "source": "/member/:path*",
+      "destination": "/members/:path*",
+      "permanent": true
+    }
+  ]
+}

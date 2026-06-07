@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Member Portal — CB Kitchen</title>
+  <meta name="description" content="CB Kitchen Private Member Portal — Sourcing, pricing, and catalog access.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/members.css">
+  <link rel="icon" href="../assets/images/logo.png" type="image/x-icon">
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════
+       LOGIN & REGISTRATION GATE
+       ════════════════════════════════════════════════════════ -->
+  <section id="login-gate" class="login-gate">
+    <div class="login-card">
+      <img src="../assets/images/logo.png" alt="CB Kitchen" class="login-logo" onerror="this.style.display='none'">
+      <h1 class="login-title">Private Sourcing Portal</h1>
+      <p class="login-subtitle">Contractor Sourcing &amp; Procurement</p>
+
+      <!-- Auth Toggle Tabs -->
+      <div class="auth-tabs">
+        <button id="auth-tab-login" class="auth-tab active" onclick="CBAuth.toggleTab('login')">Sign In</button>
+        <button id="auth-tab-signup" class="auth-tab" onclick="CBAuth.toggleTab('signup')">Request Access</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" autocomplete="off" novalidate>
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="you@company.com" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter password" required>
+        </div>
+        <button type="submit" id="login-btn" class="login-btn">Access Sourcing</button>
+      </form>
+
+      <!-- Sign Up Form (Default Hidden) -->
+      <form id="signup-form" autocomplete="off" novalidate style="display:none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="signup-name">Contact Name</label>
+            <input type="text" id="signup-name" placeholder="John Doe" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-company">Company Name</label>
+            <input type="text" id="signup-company" placeholder="Builders Inc." required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="signup-email">Email Address</label>
+            <input type="email" id="signup-email" placeholder="you@company.com" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-phone">Phone Number</label>
+            <input type="tel" id="signup-phone" placeholder="(305) 555-0100" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="signup-city">City</label>
+            <input type="text" id="signup-city" placeholder="Miami" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-state">State</label>
+            <input type="text" id="signup-state" placeholder="FL" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="signup-type">Company Sourcing Type</label>
+          <select id="signup-type" required>
+            <option value="" disabled selected>Select Business Profile</option>
+            <option value="General Contractor">General Contractor</option>
+            <option value="Kitchen/Bath Remodeler">Kitchen/Bath Remodeler</option>
+            <option value="Home Builder">Home Builder</option>
+            <option value="Developer">Developer</option>
+            <option value="Interior Designer">Interior Designer</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" placeholder="Min 6 chars" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-confirm">Confirm Password</label>
+            <input type="password" id="signup-confirm" placeholder="Re-enter password" required>
+          </div>
+        </div>
+        <button type="submit" id="signup-btn" class="login-btn">Register Application</button>
+      </form>
+
+      <div id="login-error" class="login-error" role="alert"></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       MEMBER DASHBOARD (AUTHENTICATED)
+       ════════════════════════════════════════════════════════ -->
+  <div id="member-dashboard" class="member-dashboard">
+
+    <!-- Sticky Verification Banner if status === 'Pending' -->
+    <div id="verification-banner" class="verification-banner" style="display:none;">
+      <div class="banner-inner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="banner-icon">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p><strong>Verification Pending:</strong> Your contractor account is under review. You can browse the catalog and plan specs. Quoting features will be activated upon approval.</p>
+      </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="member-header">
+      <div class="header-inner">
+        <div class="header-left">
+          <a href="../index.html" title="CB Kitchen Home">
+            <img src="../assets/images/logo.png" alt="CB Kitchen" class="header-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="logo-fallback" style="display:none; font-family:'Playfair Display',serif; color:#c9a96e; font-weight:700; font-size:1.2rem;">CB Kitchen</span>
+          </a>
+          <span class="header-badge">Sourcing Portal</span>
+        </div>
+        <div class="header-right">
+          <span id="header-member-name" class="header-member-name">Welcome, <span>Member</span></span>
+          <button id="logout-btn" class="logout-btn">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sub-navigation Tabs -->
+    <nav class="dashboard-tabs">
+      <div class="container tabs-container">
+        <button id="tab-btn-catalog" class="tab-btn active" onclick="CBDashboard.switchTab('catalog')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tab-icon"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Private Catalog
+        </button>
+        <button id="tab-btn-custom" class="tab-btn" onclick="CBDashboard.switchTab('custom')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tab-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          Submit Custom Build
+        </button>
+        <button id="tab-btn-quotes" class="tab-btn" onclick="CBDashboard.switchTab('quotes')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tab-icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Sourcing Tracker <span id="quotes-count-badge" class="badge-count" style="display:none;">0</span>
+        </button>
+        <button id="tab-btn-notebook" class="tab-btn" onclick="CBDashboard.switchTab('notebook')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tab-icon"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Notebook
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-content">
+
+      <!-- ============================================
+           TAB 1: CATALOG
+           ============================================ -->
+      <section id="tab-catalog" class="tab-section active">
+        
+        <!-- Welcome banner -->
+        <div class="welcome-banner container">
+          <p class="welcome-greeting">Sourcing System Connected</p>
+          <h2 class="welcome-title">Private Contractor Catalog</h2>
+          <p class="welcome-description">Browse pre-arranged style categories, examine luxury finishes in the material library, or submit custom architectural drafts directly to factories.</p>
+        </div>
+
+        <!-- 1. Trending Designs Carousel/Grid -->
+        <div class="trending-section container">
+          <h3 class="catalog-heading">Trending Sourcing Specs <span class="badge-tag">Sourcing Top 5</span></h3>
+          <p class="catalog-subheading">Highly-requested builder styles configured for direct sourcing</p>
+          
+          <div class="trending-grid">
+            <!-- Card 1 -->
+            <div class="trend-card" style="background-image: linear-gradient(to bottom, rgba(10,10,10,0.1) 20%, rgba(10,10,10,0.95) 90%), url('../assets/images/collection-luxury-kitchens.png');">
+              <span class="trend-category">Warm Contemporary</span>
+              <h4 class="trend-title">The Brickell Penthouse</h4>
+              <p class="trend-materials">Vertical grain walnut + Calacatta gold marble countertops + champagne gold fixtures.</p>
+              <button class="btn-trend-quote" onclick="CBDashboard.openQuoteModal('The Brickell Penthouse', 'Warm Contemporary Kitchen')">Request Sourcing Quote</button>
+            </div>
+            <!-- Card 2 -->
+            <div class="trend-card" style="background-image: linear-gradient(to bottom, rgba(10,10,10,0.1) 20%, rgba(10,10,10,0.95) 90%), url('../assets/images/hero-kitchen.png');">
+              <span class="trend-category">Tropical Modern</span>
+              <h4 class="trend-title">Barú Coastal Estate</h4>
+              <p class="trend-materials">Matte charcoal doors + exotic Teak accents + thick dark concrete quartz surfaces.</p>
+              <button class="btn-trend-quote" onclick="CBDashboard.openQuoteModal('Barú Coastal Estate', 'Tropical Modern Kitchen')">Request Sourcing Quote</button>
+            </div>
+            <!-- Card 3 -->
+            <div class="trend-card" style="background-image: linear-gradient(to bottom, rgba(10,10,10,0.1) 20%, rgba(10,10,10,0.95) 90%), url('../assets/images/collection-future-home.png');">
+              <span class="trend-category">Ultra-Modern</span>
+              <h4 class="trend-title">Euro Sleek Villa</h4>
+              <p class="trend-materials">High-gloss white lacquer + handle-less J-pull cabinets + porcelain slab counters.</p>
+              <button class="btn-trend-quote" onclick="CBDashboard.openQuoteModal('Euro Sleek Villa', 'High-Gloss Ultra-Modern Kitchen')">Request Sourcing Quote</button>
+            </div>
+            <!-- Card 4 -->
+            <div class="trend-card" style="background-image: linear-gradient(to bottom, rgba(10,10,10,0.1) 20%, rgba(10,10,10,0.95) 90%), url('../assets/images/collection-custom-cabinets.png');">
+              <span class="trend-category">Industrial Transitional</span>
+              <h4 class="trend-title">SoHo Industrial Loft</h4>
+              <p class="trend-materials">Textured concrete panels + rough-sawn rustic oak + gunmetal handles & light specs.</p>
+              <button class="btn-trend-quote" onclick="CBDashboard.openQuoteModal('SoHo Industrial Loft', 'Industrial Transitional Kitchen')">Request Sourcing Quote</button>
+            </div>
+            <!-- Card 5 -->
+            <div class="trend-card" style="background-image: linear-gradient(to bottom, rgba(10,10,10,0.1) 20%, rgba(10,10,10,0.95) 90%), url('../assets/images/collection-walkin-closets.png');">
+              <span class="trend-category">Closets &amp; Bathrooms</span>
+              <h4 class="trend-title">The Celebrity Suite</h4>
+              <p class="trend-materials">Integrated glass-door walk-in closets + double floating vanities with brass brackets.</p>
+              <button class="btn-trend-quote" onclick="CBDashboard.openQuoteModal('The Celebrity Suite', 'CB Closets & Bathrooms')">Request Sourcing Quote</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Closets and Bathroom first in catalog grid -->
+        <div class="catalog-grid-section container">
+          <h3 class="catalog-heading">CB Closets &amp; Bathrooms <span class="badge-tag tag-first">First Priority</span></h3>
+          <p class="catalog-subheading">High-margin vanity ranges and customized walk-in closet structures</p>
+          
+          <div class="catalog-items-grid">
+            <!-- Card 1 -->
+            <div class="catalog-item-card">
+              <div class="card-img-wrap">
+                <img src="../assets/images/collection-bathroom-vanities.png" alt="Luxury Vanity Line">
+              </div>
+              <div class="card-info">
+                <span class="card-label">Bathroom Vanities</span>
+                <h4 class="card-title">Luxury Vanity Line</h4>
+                <p class="card-desc">Sleek double-sink design, floating structures with warm Calacatta marble counters and gold accent veining.</p>
+                <div class="card-footer">
+                  <span class="card-spec">Premium Sourcing</span>
+                  <button class="btn-quote" onclick="CBDashboard.openQuoteModal('Luxury Vanity Line', 'Bathroom Vanity')">Request Quote</button>
+                </div>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="catalog-item-card">
+              <div class="card-img-wrap">
+                <div class="card-img-placeholder" style="background: linear-gradient(135deg, #2a1e12, #111);">
+                  <span style="color:#c9a96e; font-family:'Playfair Display',serif; font-size:1.5rem;">CB</span>
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="card-label">Bathroom Vanities</span>
+                <h4 class="card-title">Premium Mid-Tier Vanity Line</h4>
+                <p class="card-desc">Sleek walnut-finish double vanities with brushed brass handles and durable quartz surfaces.</p>
+                <div class="card-footer">
+                  <span class="card-spec">Fast Lead Time</span>
+                  <button class="btn-quote" onclick="CBDashboard.openQuoteModal('Premium Mid-Tier Vanity Line', 'Bathroom Vanity')">Request Quote</button>
+                </div>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="catalog-item-card">
+              <div class="card-img-wrap">
+                <div class="card-img-placeholder" style="background: linear-gradient(135deg, #1c1c1c, #0a0a0a);">
+                  <span style="color:#c9a96e; font-family:'Playfair Display',serif; font-size:1.5rem;">CB</span>
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="card-label">Bathroom Vanities</span>
+                <h4 class="card-title">Modern Clean Vanity Line</h4>
+                <p class="card-desc">Handle-less matte black single vanities with integrated LED mirrors and ceramic basin bowls.</p>
+                <div class="card-footer">
+                  <span class="card-spec">Volume Price</span>
+                  <button class="btn-quote" onclick="CBDashboard.openQuoteModal('Modern Clean Vanity Line', 'Bathroom Vanity')">Request Quote</button>
+                </div>
+              </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="catalog-item-card">
+              <div class="card-img-wrap">
+                <img src="../assets/images/collection-walkin-closets.png" alt="Celebrity Walk-In Closet">
+              </div>
+              <div class="card-info">
+                <span class="card-label">Walk-In Closets</span>
+                <h4 class="card-title">Celebrity Walk-In Closet</h4>
+                <p class="card-desc">High-gloss glass cabinets, central display islands, soft velvet-lined drawer slots, and built-in vanity desks.</p>
+                <div class="card-footer">
+                  <span class="card-spec">Custom Config</span>
+                  <button class="btn-quote" onclick="CBDashboard.openQuoteModal('Celebrity Walk-In Closet', 'Walk-In Closet')">Request Quote</button>
+                </div>
+              </div>
+            </div>
+            <!-- Card 5 -->
+            <div class="catalog-item-card">
+              <div class="card-img-wrap">
+                <div class="card-img-placeholder" style="background: linear-gradient(135deg, #222, #181818);">
+                  <span style="color:#c9a96e; font-family:'Playfair Display',serif; font-size:1.5rem;">CB</span>
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="card-label">Walk-In Closets</span>
+                <h4 class="card-title">Luxury Family Closet</h4>
+                <p class="card-desc">Warm oak veneer cabinetry, dual hanging rods, built-in shoe organization walls, and integrated laundry bins.</p>
+                <div class="card-footer">
+                  <span class="card-spec">Family-Sized</span>
+                  <button class="btn-quote" onclick="CBDashboard.openQuoteModal('Luxury Family Closet', 'Walk-In Closet')">Request Quote</button>
+                </div>
+              </div>
+            </div>
+            <!-- Card 6 -->
+            <div class="catalog-item-card">
+              <div class="card-img-wrap">
+                <div class="card-img-placeholder" style="background: linear-gradient(135deg, #111, #252525);">
+                  <span style="color:#c9a96e; font-family:'Playfair Display',serif; font-size:1.5rem;">CB</span>
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="card-label">Walk-In Closets</span>
+                <h4 class="card-title">Premium Mid-Tier Closet</h4>
+                <p class="card-desc">Understated gray lacquer doors, configurable wire shelving, and built-in LED rod light channels.</p>
+                <div class="card-footer">
+                  <span class="card-spec">Standard Sizing</span>
+                  <button class="btn-quote" onclick="CBDashboard.openQuoteModal('Premium Mid-Tier Closet', 'Walk-In Closet')">Request Quote</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Kitchen Collections section -->
+        <div class="catalog-grid-section container">
+          <h3 class="catalog-heading">Kitchen Collections</h3>
+          <p class="catalog-subheading">Curated architectural styles for direct factory production</p>
+          
+          <div class="catalog-items-grid">
+            <!-- Kitchen Card 1 -->
+            <div class="catalog-item-card">
+              <div class="card-img-wrap">
+                <img src="../assets/images/collection-luxury-kitchens.png" alt="Warm Contemporary Kitchen">
+              </div>
+              <div class="card-info">
+                <span class="card-label">Kitchen Sourcing</span>
+                <h4 class="card-title">Warm Contemporary</h4>
+                <p class="card-desc">Cozy luxury aesthetic. Sleek high-end cabinetry in rich oak or walnut finishes paired with thick Calacatta quartzite countertops and gold accents.</p>
+                <div class="card-footer">
+                  <span class="card-spec">Warm Luxury Vibe</span>
+                  <button class="btn-quote" onclick="CBDashboard.openQuoteModal('Warm Contemporary', 'Kitchen Sourcing')">Request Quote</button>
+                </div>
+              </div>
+            </div>
+            <!-- Kitchen Card 2 -->
+            <div class="catalog-item-card">
+              <div class="card-img-wrap">
+                <img src="../assets/images/hero-kitchen.png" alt="Tropical Modern / Cartagena Vibe">
+              </div>
+              <div class="card-info">
+                <span class="card-label">Kitchen Sourcing</span>
+                <h4 class="card-title">Tropical Modern / Cartagena Vibe</h4>
+                <p class="card-desc">Coastal exotic look. Geometric modern cabinet elements in matte black or charcoal set against exotics like teak, ipe, Suesca, or Tápula woods.</p>
+                <div class="card-footer">
+                  <span class="card-spec">Resort Aesthetic</span>
+                  <button class="btn-quote" onclick="CBDashboard.openQuoteModal('Tropical Modern / Cartagena Vibe', 'Kitchen Sourcing')">Request Quote</button>
+                </div>
+              </div>
+            </div>
+            <!-- Kitchen Card 3 -->
+            <div class="catalog-item-card">
+              <div class="card-img-wrap">
+                <img src="../assets/images/collection-future-home.png" alt="High-Gloss Ultra-Modern">
+              </div>
+              <div class="card-info">
+                <span class="card-label">Kitchen Sourcing</span>
+                <h4 class="card-title">High-Gloss Ultra-Modern</h4>
+                <p class="card-desc">High-tech Euro look. Completely handle-less cabinets in high-gloss white, grey, or black lacquer, porcelain countertops, and custom LED channels.</p>
+                <div class="card-footer">
+                  <span class="card-spec">Seamless European</span>
+                  <button class="btn-quote" onclick="CBDashboard.openQuoteModal('High-Gloss Ultra-Modern', 'Kitchen Sourcing')">Request Quote</button>
+                </div>
+              </div>
+            </div>
+            <!-- Kitchen Card 4 -->
+            <div class="catalog-item-card">
+              <div class="card-img-wrap">
+                <img src="../assets/images/collection-custom-cabinets.png" alt="Industrial Transitional">
+              </div>
+              <div class="card-info">
+                <span class="card-label">Kitchen Sourcing</span>
+                <h4 class="card-title">Industrial Transitional</h4>
+                <p class="card-desc">Moody concrete vibe. Concrete textures and dark metal cabinetry combined with rough-sawn wood details, matte black granite counters, and iron hardware.</p>
+                <div class="card-footer">
+                  <span class="card-spec">Loft &amp; Custom Vibe</span>
+                  <button class="btn-quote" onclick="CBDashboard.openQuoteModal('Industrial Transitional', 'Kitchen Sourcing')">Request Quote</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Material Library Section -->
+        <div class="material-library-section container">
+          <h3 class="catalog-heading">Sourcing Material Library</h3>
+          <p class="catalog-subheading">Verified high-end veneers, stones, lacquers and accents available for custom orders</p>
+          
+          <div class="swatches-category">
+            <h4 class="swatch-cat-title">Exotic &amp; Natural Woods</h4>
+            <div class="swatches-grid">
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: linear-gradient(45deg, #8b5a2b, #a0522d);"></div>
+                <div class="swatch-name">Vertical Oak</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: linear-gradient(45deg, #5c4033, #3d2314);"></div>
+                <div class="swatch-name">Walnut</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: linear-gradient(45deg, #cd853f, #8b5a2b);"></div>
+                <div class="swatch-name">Exotic Teak</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: linear-gradient(45deg, #2b1810, #402218);"></div>
+                <div class="swatch-name">Ipe</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: linear-gradient(45deg, #b08d57, #664614);"></div>
+                <div class="swatch-name">Tápula</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: linear-gradient(45deg, #d2b48c, #8b7355);"></div>
+                <div class="swatch-name">Suesca</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swatches-category">
+            <h4 class="swatch-cat-title">Lacquer Finishes</h4>
+            <div class="swatches-grid">
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: #ffffff; border: 1px solid rgba(255,255,255,0.1);"></div>
+                <div class="swatch-name">Gloss White</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: #2f3542;"></div>
+                <div class="swatch-name">Matte Slate Grey</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: #111111;"></div>
+                <div class="swatch-name">Midnight Black</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swatches-category">
+            <h4 class="swatch-cat-title">Premium Countertop Slabs</h4>
+            <div class="swatches-grid">
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: radial-gradient(circle, #f0ede6 40%, #c5bba7 95%);"></div>
+                <div class="swatch-name">Calacatta Gold</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: radial-gradient(circle, #ffffff 60%, #b2bec3 99%);"></div>
+                <div class="swatch-name">White Quartzite</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: radial-gradient(circle, #1a1a1a 70%, #000000 99%);"></div>
+                <div class="swatch-name">Matte Granite</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: radial-gradient(circle, #535c68 50%, #2f3640 95%);"></div>
+                <div class="swatch-name">Soapstone</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: radial-gradient(circle, #7f8c8d 60%, #34495e 99%);"></div>
+                <div class="swatch-name">Concrete Slab</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swatches-category">
+            <h4 class="swatch-cat-title">Hardware Metals</h4>
+            <div class="swatches-grid">
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: linear-gradient(135deg, #c9a96e, #b8943f);"></div>
+                <div class="swatch-name">Brushed Brass</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: linear-gradient(135deg, #e4d0a8, #d4ba85);"></div>
+                <div class="swatch-name">Champagne Gold</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: #111111; border: 1px solid var(--border-subtle);"></div>
+                <div class="swatch-name">Matte Black Iron</div>
+              </div>
+              <div class="swatch-card">
+                <div class="swatch-color" style="background: linear-gradient(135deg, #555, #222);"></div>
+                <div class="swatch-name">Gunmetal</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================
+           TAB 2: CUSTOM SOURCING
+           ============================================ -->
+      <section id="tab-custom" class="tab-section container">
+        <div class="form-container-card">
+          <div class="form-header">
+            <h3 class="form-title">Custom Sourcing &amp; Drawing Upload</h3>
+            <p class="form-subtitle">Submit architectural drawings, cabinetry schedules, or project drafts directly to our factory teams for quoting.</p>
+          </div>
+          
+          <form id="custom-sourcing-form" autocomplete="off" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="custom-proj-name">Project Name / Site Address</label>
+                <input type="text" id="custom-proj-name" placeholder="E.g. Brickell Tower Penthouse 4" required>
+              </div>
+              <div class="form-group">
+                <label for="custom-proj-type">Sourcing Project Scope</label>
+                <select id="custom-proj-type" required>
+                  <option value="" disabled selected>Select Sourcing Scope</option>
+                  <option value="Full Kitchen Build">Full Kitchen Sourcing</option>
+                  <option value="Bathroom Vanity Package">Bathroom Vanity Sourcing</option>
+                  <option value="Custom Closet Sourcing">Walk-In Closet Sourcing</option>
+                  <option value="Cabinetry Sourcing Only">Cabinetry Sourcing Only</option>
+                  <option value="Multi-Unit Residential">Multi-Unit Sourcing</option>
+                  <option value="Full Custom Project">Entire Residence Sourcing</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Upload Floor Plans, Drawings, or Elevations (PDF, JPG, PNG)</label>
+              <div id="custom-file-zone" class="file-upload-zone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="upload-icon">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <p>Drag &amp; drop elevation sheets or click to select files</p>
+                <span class="upload-hint">Upload architectural layouts — max 25MB</span>
+                <input type="file" id="custom-file-input" multiple style="display:none;">
+                <div id="file-list-preview" class="file-list-preview"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="custom-measurements">Scope Details &amp; Linear Footage Specs</label>
+              <textarea id="custom-measurements" rows="4" placeholder="Detail custom cabinet widths, island layout specs, linear footage details, ceiling heights..." required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="custom-materials">Preferred Sourcing Materials</label>
+                <input type="text" id="custom-materials" placeholder="E.g. Walnut veneer, Calacatta marble counters, matte black hardware">
+              </div>
+              <div class="form-group">
+                <label for="custom-budget">Target Budget Goal</label>
+                <select id="custom-budget" required>
+                  <option value="" disabled selected>Select Sourcing Tier</option>
+                  <option value="Under $15,000">Under $15,000</option>
+                  <option value="$15,000 - $30,000">$15,000 - $30,000</option>
+                  <option value="$30,000 - $50,000">$30,000 - $50,000</option>
+                  <option value="$50,000 - $100,000">$50,000 - $100,000</option>
+                  <option value="$100,000+">$100,000+</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="custom-timeline">Delivery Timeline</label>
+                <select id="custom-timeline" required>
+                  <option value="" disabled selected>Select Lead Time Window</option>
+                  <option value="Under 4 weeks">Under 4 weeks (Expedited)</option>
+                  <option value="4-8 weeks">4 - 8 weeks</option>
+                  <option value="8-12 weeks">8 - 12 weeks</option>
+                  <option value="12+ weeks">12+ weeks</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="custom-notes">Special Sourcing Directives</label>
+                <input type="text" id="custom-notes" placeholder="E.g. Soft-close hinges only, integration for standard appliances">
+              </div>
+            </div>
+
+            <button type="submit" id="custom-submit-btn" class="submit-sourcing-btn">Submit Sourcing Project</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ============================================
+           TAB 3: MY QUOTES
+           ============================================ -->
+      <section id="tab-quotes" class="tab-section container">
+        <div class="quotes-tracker-card">
+          <div class="card-header">
+            <h3 class="tracker-title">Sourcing Tracker</h3>
+            <p class="tracker-subtitle">Monitor project quotation progress, direct factory updates, and download finished specs.</p>
+          </div>
+          
+          <div class="table-container">
+            <table class="quotes-tracker-table">
+              <thead>
+                <tr>
+                  <th>Sourcing ID</th>
+                  <th>Date</th>
+                  <th>Project / Design Name</th>
+                  <th>Type</th>
+                  <th>Budget Goal</th>
+                  <th>Sourcing Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="member-quotes-list">
+                <!-- Injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <div id="quotes-empty-state" class="quotes-empty-state" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="empty-icon">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <h4>No Sourcing Requests Active</h4>
+            <p>Select styles from the catalog or submit custom drawing sheets to start factory pricing calculations.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           TAB 4: CONTRACTOR NOTEBOOK
+           ============================================ -->
+      <section id="tab-notebook" class="tab-section container">
+        <div class="form-container-card">
+          <div class="form-header">
+            <h3 class="form-title">Contractor Sourcing Notebook</h3>
+            <p class="form-subtitle">Keep track of project dimensions, client preferences, material estimates, and notes for your personal reference.</p>
+          </div>
+          
+          <form id="notebook-form" autocomplete="off" onsubmit="CBDashboard.saveNotebookNote(event)">
+            <div class="form-group">
+              <label for="note-title">Note Title / Project Reference</label>
+              <input type="text" id="note-title" placeholder="E.g., 342 Ocean Drive Kitchen Specs" required>
+            </div>
+            <div class="form-group">
+              <label for="note-content">Note Details</label>
+              <textarea id="note-content" rows="5" placeholder="Enter measurements, cabinet count, material preferences, or notes here..." required></textarea>
+            </div>
+            <button type="submit" class="submit-sourcing-btn">Save Note</button>
+          </form>
+          
+          <div class="saved-notes-section" style="margin-top: 40px;">
+            <h4 class="catalog-heading" style="margin-bottom: 20px; font-size: 1.25rem;">Saved Notes</h4>
+            <div id="notebook-notes-list" class="notebook-notes-grid">
+              <!-- Injected dynamically -->
+            </div>
+            <div id="notebook-empty-state" class="quotes-empty-state" style="margin-top: 20px; display: none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="empty-icon">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+              </svg>
+              <h4>Notebook is Empty</h4>
+              <p>Your saved contractor notes will appear here. Start adding note logs above.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="member-footer">
+      <div class="footer-inner">
+        <p class="footer-brand">CB Kitchen Private Sourcing Network</p>
+        <p class="footer-note">Members Only — Verified Sourcing Access</p>
+        <p class="footer-copy">&copy; 2026 Custom Built Kitchen. All rights reserved.</p>
+      </div>
+    </footer>
+
+  </div><!-- /member-dashboard -->
+
+
+  <!-- ════════════════════════════════════════════════════════
+       CATALOG QUOTE MODAL FLOW
+       ════════════════════════════════════════════════════════ -->
+  <div id="catalog-quote-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Request Sourcing Quote</h3>
+          <p class="modal-subtitle">Design: <span id="modal-design-name" style="color:var(--gold); font-weight:600;">—</span> (<span id="modal-design-category">—</span>)</p>
+        </div>
+        <button class="modal-close" onclick="CBDashboard.closeQuoteModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <form id="catalog-quote-form" autocomplete="off" novalidate>
+        <input type="hidden" id="modal-field-design">
+        <input type="hidden" id="modal-field-category">
+
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="modal-field-location">Project Site Location (City, State)</label>
+              <input type="text" id="modal-field-location" placeholder="E.g. Brickell, Miami, FL" required>
+            </div>
+            <div class="form-group">
+              <label for="modal-field-budget">Target Budget Tiers</label>
+              <select id="modal-field-budget" required>
+                <option value="" disabled selected>Select Target Range</option>
+                <option value="Under $15,000">Under $15,000</option>
+                <option value="$15,000 - $30,000">$15,000 - $30,000</option>
+                <option value="$30,000 - $50,000">$30,000 - $50,000</option>
+                <option value="$50,000 - $100,000">$50,000 - $100,000</option>
+                <option value="$100,000+">$100,000+</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="modal-field-timeline">Required Delivery Timeline</label>
+              <select id="modal-field-timeline" required>
+                <option value="" disabled selected>Select Lead Window</option>
+                <option value="Under 4 weeks">Under 4 weeks (Expedited)</option>
+                <option value="4-8 weeks">4 - 8 weeks</option>
+                <option value="8-12 weeks">8 - 12 weeks</option>
+                <option value="12+ weeks">12+ weeks</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="modal-field-materials">Custom Finish/Material Notes</label>
+              <input type="text" id="modal-field-materials" placeholder="Pre-populated based on collection style">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="modal-field-dimensions">Measurements &amp; Project Scope Details</label>
+            <textarea id="modal-field-dimensions" rows="3" placeholder="Linear footage, ceiling height, quantity requirements..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Upload Sourcing Layout Sheet / Elevation (Optional)</label>
+            <div id="modal-file-zone" class="file-upload-zone compact">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="upload-icon-small">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <p>Click or drag specs here</p>
+              <input type="file" id="modal-file-input" multiple style="display:none;">
+              <div id="modal-file-list-preview" class="file-list-preview"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" onclick="CBDashboard.closeQuoteModal()">Cancel</button>
+          <button type="submit" id="modal-submit-btn" class="btn-confirm">Submit Sourcing Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       SOURCING LOGS / ADMIN NOTES MODAL
+       ════════════════════════════════════════════════════════ -->
+  <div id="sourcing-notes-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-card compact">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Sourcing Status Update</h3>
+          <p class="modal-subtitle">Project ID: <span id="log-project-id" style="color:var(--gold); font-weight:600;">—</span></p>
+        </div>
+        <button class="modal-close" onclick="CBDashboard.closeNotesModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="log-notes-container">
+          <h4 class="logs-title">Direct Factory Notes &amp; Updates</h4>
+          <div id="log-notes-display" class="log-notes-display">
+            <!-- Dynamic notes -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-confirm" onclick="CBDashboard.closeNotesModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Alert -->
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <div class="toast-icon">
+      <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="10"/><line x1="11" y1="7" x2="11" y2="12"/><circle cx="11" cy="15.5" r="0.8" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+    <p id="toast-message" class="toast-message"></p>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/members.js?v=2.0"></script>
+
+</body>
+</html>
