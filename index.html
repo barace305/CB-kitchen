@@ -3,835 +3,471 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CB Kitchen — Private luxury kitchen sourcing network for contractors, builders, and developers. Access premium cabinets, custom-built kitchens, bathroom vanities, and cabinetry at exclusive contractor pricing.">
-    <meta name="keywords" content="luxury kitchen cabinets, contractor pricing, custom cabinets, bathroom vanities, kitchen sourcing, contractor network, premium cabinetry, CB Kitchen">
-    <meta name="author" content="CB Kitchen">
-    <meta name="robots" content="index, follow">
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="CB Kitchen — Private Luxury Kitchen Network for Contractors">
-    <meta property="og:description" content="Premium kitchens, cabinetry, and bathroom solutions sourced for contractors who want better margins, better quality, and faster access.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://cbkitchen.io">
-    <meta property="og:image" content="assets/images/hero-kitchen.png">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="CB Kitchen — Private Luxury Kitchen Network for Contractors">
-    <meta name="twitter:description" content="Premium kitchens, cabinetry, and bathroom solutions sourced for contractors who want better margins, better quality, and faster access.">
-
-    <title>CB Kitchen — Private Luxury Kitchen Network for Contractors</title>
-
-    <!-- Favicon placeholder -->
-    <link rel="icon" type="image/x-icon" href="assets/images/logo.png">
-
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/index.css">
-
-    <!-- Preconnect for performance -->
+    <title>CB Kitchen — Investor Presentation</title>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
 </head>
-<body class="loading">
+<body>
 
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- HEADER / NAVIGATION                                        -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <header class="header" id="header">
-        <div class="header__container container">
-            <!-- Logo -->
-            <a href="#" class="header__logo" aria-label="CB Kitchen Home">
-                <img src="assets/images/logo.png" alt="CB Kitchen Logo" class="header__logo-img">
-            </a>
-
-            <!-- Desktop Navigation -->
-            <nav class="header__nav" id="main-nav" aria-label="Main Navigation">
-                <ul class="header__nav-list">
-                    <li><a href="#hero" class="header__nav-link active">Home</a></li>
-                    <li><a href="#membership" class="header__nav-link">Membership</a></li>
-                    <li><a href="#collections" class="header__nav-link">Collections</a></li>
-                    <li><a href="#how-it-works" class="header__nav-link">How It Works</a></li>
-                    <li><a href="#quality" class="header__nav-link">Quality</a></li>
-                    <li><a href="#quote" class="header__nav-link">Contact</a></li>
-                </ul>
-            </nav>
-
-            <!-- Header Actions -->
-            <div class="header__actions">
-                <a href="members/index.html" class="header__login-btn" id="header-login-btn">Member Login</a>
-                <a href="#membership" class="header__cta btn-outline" id="header-cta">Apply for Membership</a>
-            </div>
-
-            <!-- Hamburger Menu -->
-            <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
-                <span class="hamburger__line"></span>
-                <span class="hamburger__line"></span>
-                <span class="hamburger__line"></span>
-            </button>
+    <!-- ─── HEADER BAR ─── -->
+    <header class="pres-header">
+        <div class="pres-header__brand">
+            <img src="assets/images/logo.png" alt="CB Kitchen Logo" class="pres-header__logo">
+            <h1 class="pres-header__title">CB Kitchen <span>Investor Deck</span></h1>
         </div>
-
-        <!-- Mobile Navigation Overlay -->
-        <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
-            <nav class="mobile-nav__inner" aria-label="Mobile Navigation">
-                <ul class="mobile-nav__list">
-                    <li><a href="#hero" class="mobile-nav__link">Home</a></li>
-                    <li><a href="#membership" class="mobile-nav__link">Membership</a></li>
-                    <li><a href="#collections" class="mobile-nav__link">Collections</a></li>
-                    <li><a href="#how-it-works" class="mobile-nav__link">How It Works</a></li>
-                    <li><a href="#quality" class="mobile-nav__link">Quality</a></li>
-                    <li><a href="#quote" class="mobile-nav__link">Contact</a></li>
-                </ul>
-                <a href="#membership" class="mobile-nav__cta btn-primary">Apply for Membership</a>
-                <a href="members/index.html" class="mobile-nav__login-btn" style="margin-top: 1rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; text-decoration: none;">Member Login</a>
-            </nav>
+        <div class="pres-header__nav-info">
+            <div class="pres-header__counter">
+                Slide <span id="current-slide-num">1</span> of <span id="total-slide-num">8</span>
+            </div>
+            <button class="pres-header__help-btn" id="btn-help" aria-label="Show Shortcuts">?</button>
         </div>
     </header>
 
 
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- HERO SECTION                                                -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <section class="hero" id="hero">
-        <div class="hero__bg">
-            <img src="assets/images/hero-kitchen.png" alt="Luxury modern kitchen interior" class="hero__bg-img lazy">
-            <div class="hero__overlay"></div>
-        </div>
+    <!-- ─── PRESENTATION VIEWPORT ─── -->
+    <main class="presentation" id="presentation">
+        <div class="slides-viewport" id="slides-viewport">
 
-        <div class="hero__content container">
-            <h1 class="hero__title reveal" data-delay="100">
-                Private Luxury Kitchen Network<br>
-                <span class="text-gold">for Contractors</span>
-            </h1>
-
-            <p class="hero__tagline reveal" data-delay="200">
-                Premium kitchens, cabinetry, and bathroom solutions sourced for contractors who want better margins, better quality, and faster access.
-            </p>
-
-            <p class="hero__slogan reveal" data-delay="300">
-                <span class="shimmer-text">Save and make contractors hundreds of thousands a year.</span>
-            </p>
-
-            <div class="hero__buttons reveal" data-delay="400">
-                <a href="#membership" class="btn-primary" id="hero-apply-btn">
-                    <span>Apply for Membership</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </a>
-                <a href="#quote" class="btn-secondary" id="hero-quote-btn">
-                    <span>Request a Quote</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="hero__scroll-indicator" aria-hidden="true">
-            <div class="hero__scroll-line"></div>
-            <span class="hero__scroll-text">Scroll</span>
-        </div>
-    </section>
-
-
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- MEMBERSHIP SECTION                                          -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <section class="membership section-padding" id="membership">
-        <div class="container">
-            <!-- Section Header -->
-            <div class="section-header reveal">
-                <div class="section-header__accent"></div>
-                <h2 class="section-header__title">Private Contractor <span class="text-gold">Network</span></h2>
-                <p class="section-header__subtitle">CB Kitchen is an exclusive private sourcing network built for contractors, builders, developers, and remodelers who demand premium quality at better margins.</p>
-            </div>
-
-            <div class="membership__grid">
-                <!-- Benefits List -->
-                <div class="membership__benefits reveal" data-delay="100">
-                    <h3 class="membership__benefits-title">Membership Benefits</h3>
-                    <ul class="membership__benefits-list">
-                        <li class="membership__benefit">
-                            <div class="membership__benefit-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                            </div>
-                            <div>
-                                <h4>Exclusive Contractor Pricing</h4>
-                                <p>Access pricing structures unavailable through retail channels</p>
-                            </div>
-                        </li>
-                        <li class="membership__benefit">
-                            <div class="membership__benefit-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                            </div>
-                            <div>
-                                <h4>Private Catalog Access</h4>
-                                <p>Browse our curated collection of premium materials and finishes</p>
-                            </div>
-                        </li>
-                        <li class="membership__benefit">
-                            <div class="membership__benefit-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                            </div>
-                            <div>
-                                <h4>Priority Quotes</h4>
-                                <p>Get ahead in the queue with expedited quoting for members</p>
-                            </div>
-                        </li>
-                        <li class="membership__benefit">
-                            <div class="membership__benefit-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                            </div>
-                            <div>
-                                <h4>Global Sourcing Relationships</h4>
-                                <p>Leverage our international manufacturing partnerships</p>
-                            </div>
-                        </li>
-                        <li class="membership__benefit">
-                            <div class="membership__benefit-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
-                            </div>
-                            <div>
-                                <h4>Quality Assurance Support</h4>
-                                <p>Our team inspects and verifies every supplier partnership</p>
-                            </div>
-                        </li>
-                        <li class="membership__benefit">
-                            <div class="membership__benefit-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                            </div>
-                            <div>
-                                <h4>Logistics Coordination</h4>
-                                <p>End-to-end shipping, tracking, and delivery management</p>
-                            </div>
-                        </li>
-                        <li class="membership__benefit">
-                            <div class="membership__benefit-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                            </div>
-                            <div>
-                                <h4>Dedicated Project Support</h4>
-                                <p>Personal account management for every project</p>
-                            </div>
-                        </li>
-                        <li class="membership__benefit">
-                            <div class="membership__benefit-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                            </div>
-                            <div>
-                                <h4>Premium Kitchen & Bath Options</h4>
-                                <p>Full range of luxury kitchen cabinets, vanities, and cabinetry</p>
-                            </div>
-                        </li>
-                        <li class="membership__benefit">
-                            <div class="membership__benefit-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                            </div>
-                            <div>
-                                <h4>Grandfathered Pricing Lock</h4>
-                                <p>Your founding member rate is locked for life and will never increase</p>
-                            </div>
-                        </li>
-                    </ul>
+            <!-- ═══════════════════════════════════════════════════════
+                 SLIDE 1: COVER SLIDE
+                 ═══════════════════════════════════════════════════════ -->
+            <section class="slide cover-slide" id="slide-1">
+                <div class="slide__container">
+                    <img src="assets/images/logo.png" alt="CB Kitchen Sourcing Platform" class="cover-slide__logo slide-element">
+                    <h2 class="cover-slide__title slide-element">CB Kitchen <span>Sourcing Platform</span></h2>
+                    <p class="cover-slide__tagline slide-element">Private Luxury Contractor Sourcing Network</p>
+                    <div class="cover-slide__divider slide-element"></div>
+                    <p class="cover-slide__meta slide-element">Investor Presentation • Q2 2026</p>
                 </div>
+            </section>
 
-                <!-- Pricing Card -->
-                <div class="membership__pricing reveal" data-delay="200">
-                    <div class="membership__pricing-card">
-                        <div class="membership__pricing-badge">Contractor Access</div>
-                        <div class="membership__pricing-amount">
-                            <span class="membership__pricing-currency">$</span>
-                            <span class="membership__pricing-number">300</span>
-                            <span class="membership__pricing-period">/year</span>
+            <!-- ═══════════════════════════════════════════════════════
+                 SLIDE 2: THE PROBLEM
+                 ═══════════════════════════════════════════════════════ -->
+            <section class="slide" id="slide-2">
+                <div class="slide__container">
+                    <span class="slide__subtitle slide-element">Market Friction</span>
+                    <h2 class="slide__title slide-element">Traditional Contractor Sourcing is <span>Broken</span></h2>
+                    
+                    <div class="grid-cards slide-element">
+                        <!-- Problem Card 1 -->
+                        <div class="card-item">
+                            <div class="card-item__icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 6v12m-3-2.818.879.559c.743.472 1.638.749 2.583.749 2.012 0 3.65-1.214 3.65-2.73 0-1.514-1.638-2.729-3.65-2.729-2.012 0-3.65-1.215-3.65-2.73 0-1.514 1.638-2.729 3.65-2.729.945 0 1.84.277 2.583.749.367.233.879.56.879.56M12 3v3m0 15v3"/></svg>
+                            </div>
+                            <h3 class="card-item__title">Extreme Retail Markups</h3>
+                            <p class="card-item__text">Contractors pay massive retail premiums (30% to 50%) for premium kitchen cabinets and bath vanities, directly eroding project profit margins.</p>
+                            <div class="card-item__metric">30%–50%<span>lost margin</span></div>
                         </div>
-                        <p class="membership__pricing-desc">Everything you need to source premium kitchens and cabinetry at better margins. Locked in for early founding members.</p>
-                        <ul class="membership__pricing-features">
-                            <li>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                Private Catalog Access
-                            </li>
-                            <li>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                Unlimited Quote Requests
-                            </li>
-                            <li>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                Supplier Pricing Access
-                            </li>
-                            <li>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                Dedicated Project Support
-                            </li>
-                            <li>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                Priority Quote Processing
-                            </li>
-                            <li>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                Logistics & Shipping Coordination
-                            </li>
-                            <li>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                Grandfathered Founding Rate for Life
-                            </li>
-                        </ul>
-                        <a href="membership-checkout.html" class="btn-primary membership__pricing-btn" id="membership-apply-btn">Apply for Membership</a>
-                        <p class="membership__pricing-note">Membership gives access to private catalog, quote requests, supplier pricing opportunities, and project support. Founding rate is locked for life. If denied, you receive a full refund.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- COLLECTIONS SECTION                                         -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <section class="collections section-padding" id="collections">
-        <div class="container">
-            <!-- Section Header -->
-            <div class="section-header reveal">
-                <div class="section-header__accent"></div>
-                <h2 class="section-header__title">Premium <span class="text-gold">Collections</span></h2>
-                <p class="section-header__subtitle">Explore our curated categories of luxury kitchen, bath, and cabinetry solutions — sourced from trusted international manufacturers.</p>
-            </div>
-
-            <div class="collections__grid">
-                <!-- Luxury Kitchens -->
-                <div class="collection-card reveal" data-delay="0">
-                    <div class="collection-card__image">
-                        <img src="assets/images/collection-luxury-kitchens.png" alt="Luxury Kitchens" class="lazy">
-                    </div>
-                    <div class="collection-card__overlay"></div>
-                    <div class="collection-card__content">
-                        <span class="collection-card__tag">Premium</span>
-                        <h3 class="collection-card__title">Luxury Kitchens</h3>
-                        <p class="collection-card__desc">Full custom kitchen builds with premium materials, finishes, and hardware.</p>
-                        <span class="collection-card__link">
-                            Explore Collection
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Custom Cabinets -->
-                <div class="collection-card reveal" data-delay="100">
-                    <div class="collection-card__image">
-                        <img src="assets/images/collection-custom-cabinets.png" alt="Custom Cabinets" class="lazy">
-                    </div>
-                    <div class="collection-card__overlay"></div>
-                    <div class="collection-card__content">
-                        <span class="collection-card__tag">Bespoke</span>
-                        <h3 class="collection-card__title">Custom Cabinets</h3>
-                        <p class="collection-card__desc">Tailored cabinetry solutions built to your exact specifications and design vision.</p>
-                        <span class="collection-card__link">
-                            Explore Collection
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Bathroom Vanities -->
-                <div class="collection-card reveal" data-delay="200">
-                    <div class="collection-card__image">
-                        <img src="assets/images/collection-bathroom-vanities.png" alt="Bathroom Vanities" class="lazy">
-                    </div>
-                    <div class="collection-card__overlay"></div>
-                    <div class="collection-card__content">
-                        <span class="collection-card__tag">Luxury Bath</span>
-                        <h3 class="collection-card__title">Bathroom Vanities</h3>
-                        <p class="collection-card__desc">Premium vanity units with marble, quartz, and custom finish options.</p>
-                        <span class="collection-card__link">
-                            Explore Collection
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Walk-In Closets -->
-                <div class="collection-card reveal" data-delay="300">
-                    <div class="collection-card__image">
-                        <img src="assets/images/collection-walkin-closets.png" alt="Walk-In Closets" class="lazy">
-                    </div>
-                    <div class="collection-card__overlay"></div>
-                    <div class="collection-card__content">
-                        <span class="collection-card__tag">Organization</span>
-                        <h3 class="collection-card__title">Walk-In Closets</h3>
-                        <p class="collection-card__desc">Custom closet systems with premium shelving, lighting, and hardware.</p>
-                        <span class="collection-card__link">
-                            Explore Collection
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Commercial / Multi-Unit -->
-                <div class="collection-card reveal" data-delay="400">
-                    <div class="collection-card__image">
-                        <img src="assets/images/collection-commercial.png" alt="Commercial and Multi-Unit Projects" class="lazy">
-                    </div>
-                    <div class="collection-card__overlay"></div>
-                    <div class="collection-card__content">
-                        <span class="collection-card__tag">Commercial</span>
-                        <h3 class="collection-card__title">Commercial / Multi-Unit</h3>
-                        <p class="collection-card__desc">Scalable kitchen and cabinetry solutions for multi-unit and commercial developments.</p>
-                        <span class="collection-card__link">
-                            Explore Collection
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Future Home Collections -->
-                <div class="collection-card reveal" data-delay="500">
-                    <div class="collection-card__image">
-                        <img src="assets/images/collection-future-home.png" alt="Future Home Collections" class="lazy">
-                    </div>
-                    <div class="collection-card__overlay"></div>
-                    <div class="collection-card__content">
-                        <span class="collection-card__tag">Coming Soon</span>
-                        <h3 class="collection-card__title">Future Home Collections</h3>
-                        <p class="collection-card__desc">Next-generation smart home kitchen concepts and integrated living solutions.</p>
-                        <span class="collection-card__link">
-                            Coming Soon
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- HOW IT WORKS SECTION                                        -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <section class="how-it-works section-padding" id="how-it-works">
-        <div class="container">
-            <!-- Section Header -->
-            <div class="section-header reveal">
-                <div class="section-header__accent"></div>
-                <h2 class="section-header__title">How It <span class="text-gold">Works</span></h2>
-                <p class="section-header__subtitle">This is not a simple add-to-cart store. CB Kitchen is a quote-based, custom sourcing network built for professional contractors.</p>
-            </div>
-
-            <div class="steps">
-                <div class="steps__line" aria-hidden="true"></div>
-
-                <div class="step reveal" data-delay="0">
-                    <div class="step__number">01</div>
-                    <div class="step__content">
-                        <h3 class="step__title">Join the Private Network</h3>
-                        <p class="step__desc">Apply for membership and gain access to our exclusive contractor sourcing platform.</p>
-                    </div>
-                </div>
-
-                <div class="step reveal" data-delay="150">
-                    <div class="step__number">02</div>
-                    <div class="step__content">
-                        <h3 class="step__title">Submit Your Project Details</h3>
-                        <p class="step__desc">Share your project specs, finishes, quantities, and timeline with our team.</p>
-                    </div>
-                </div>
-
-                <div class="step reveal" data-delay="300">
-                    <div class="step__number">03</div>
-                    <div class="step__content">
-                        <h3 class="step__title">Receive a Custom Quote</h3>
-                        <p class="step__desc">We source options from our verified manufacturing partners and deliver a tailored quote.</p>
-                    </div>
-                </div>
-
-                <div class="step reveal" data-delay="450">
-                    <div class="step__number">04</div>
-                    <div class="step__content">
-                        <h3 class="step__title">Production & Quality Review</h3>
-                        <p class="step__desc">Your order enters production with quality checkpoints throughout the manufacturing process.</p>
-                    </div>
-                </div>
-
-                <div class="step reveal" data-delay="600">
-                    <div class="step__number">05</div>
-                    <div class="step__content">
-                        <h3 class="step__title">Shipping & Delivery Coordination</h3>
-                        <p class="step__desc">We coordinate logistics from factory to your job site, with tracking and support at every stage.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- QUALITY ASSURANCE SECTION                                   -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <section class="quality section-padding" id="quality">
-        <div class="container">
-            <!-- Section Header -->
-            <div class="section-header reveal">
-                <div class="section-header__accent"></div>
-                <h2 class="section-header__title">Quality <span class="text-gold">Assurance</span></h2>
-                <p class="section-header__subtitle">We don't just source products — we build verified, long-term partnerships with manufacturers who meet our standards.</p>
-            </div>
-
-            <div class="quality__grid">
-                <!-- Image Side -->
-                <div class="quality__image reveal" data-delay="100">
-                    <div class="quality__image-wrapper">
-                        <img src="assets/images/quality-inspection.png" alt="Quality inspection of premium kitchen cabinets" class="lazy">
-                        <div class="quality__image-accent"></div>
-                    </div>
-                </div>
-
-                <!-- Content Side -->
-                <div class="quality__content reveal" data-delay="200">
-                    <div class="quality__point">
-                        <div class="quality__point-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+                        <!-- Problem Card 2 -->
+                        <div class="card-item">
+                            <div class="card-item__icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                            </div>
+                            <h3 class="card-item__title">Unpredictable Delays</h3>
+                            <p class="card-item__text">Local distributors suffer from volatile lead times, delayed shipping, and lack of prioritization for active job sites, causing expensive delays.</p>
+                            <div class="card-item__metric">6–12<span>weeks lead time</span></div>
                         </div>
-                        <div>
-                            <h3>Personal Supplier Inspections</h3>
-                            <p>We travel internationally to inspect suppliers, tour factories, and verify production capabilities before establishing any partnership.</p>
-                        </div>
-                    </div>
 
-                    <div class="quality__point">
-                        <div class="quality__point-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-                        </div>
-                        <div>
-                            <h3>Verified Quality Standards</h3>
-                            <p>Every supplier is vetted for material quality, construction methods, and finish consistency before we build long-term partnerships.</p>
-                        </div>
-                    </div>
-
-                    <div class="quality__point">
-                        <div class="quality__point-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-                        </div>
-                        <div>
-                            <h3>Premium Materials & Packaging</h3>
-                            <p>We focus on premium wood, hardware, finishes, and protective packaging to ensure products arrive in perfect condition.</p>
-                        </div>
-                    </div>
-
-                    <div class="quality__point">
-                        <div class="quality__point-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        </div>
-                        <div>
-                            <h3>Reduced Delays & Damage</h3>
-                            <p>Our processes are designed to minimize production delays, shipping damage, and quality inconsistencies.</p>
-                        </div>
-                    </div>
-
-                    <div class="quality__point">
-                        <div class="quality__point-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        </div>
-                        <div>
-                            <h3>Long-Term Contractor Relationships</h3>
-                            <p>We're not interested in one-time sales. Our goal is building lasting partnerships with contractors who return project after project.</p>
+                        <!-- Problem Card 3 -->
+                        <div class="card-item">
+                            <div class="card-item__icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a6 6 0 0 0-3.44-5.31m-4.72-.4V10.5m0-3h3.375M12 21a9.003 9.003 0 0 0 8.354-5.646M12 3a9 9 0 0 0-7.79 4.96M3 21h18"/></svg>
+                            </div>
+                            <h3 class="card-item__title">Dedicated Factory Relationships</h3>
+                            <p class="card-item__text">CB Kitchen works directly with vetted manufacturing partners to ensure quality standards, communication efficiency, and long-term sourcing reliability.</p>
+                            <div class="card-item__metric">100%<span>vetted partners</span></div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- CONTRACTOR QUOTE FORM SECTION                               -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <section class="quote-section section-padding" id="quote">
-        <div class="container">
-            <!-- Section Header -->
-            <div class="section-header reveal">
-                <div class="section-header__accent"></div>
-                <h2 class="section-header__title">Submit Your <span class="text-gold">Project</span></h2>
-                <p class="section-header__subtitle">Tell us about your project and we'll prepare a custom quote tailored to your specifications, timeline, and budget.</p>
-            </div>
-
-            <div class="quote-form__wrapper reveal" data-delay="100">
-                <form class="quote-form" id="quote-form" novalidate>
-                    <div class="quote-form__grid">
-                        <!-- Name -->
-                        <div class="form-group" id="form-group-name">
-                            <label for="quote-name" class="form-label">Full Name <span class="required">*</span></label>
-                            <input type="text" id="quote-name" name="name" class="form-input" placeholder="Your full name" required>
-                            <span class="form-error" id="error-name"></span>
+            <!-- ═══════════════════════════════════════════════════════
+                 SLIDE 3: THE SOLUTION
+                 ═══════════════════════════════════════════════════════ -->
+            <section class="slide" id="slide-3">
+                <div class="slide__container">
+                    <span class="slide__subtitle slide-element">Platform Sourcing</span>
+                    <h2 class="slide__title slide-element">A Direct Sourcing <span>Channel</span></h2>
+                    
+                    <div class="grid-cards slide-element">
+                        <!-- Solution Card 1 -->
+                        <div class="card-item">
+                            <div class="card-item__icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615 3.001 3.001 0 0 0 3.75.615 3.001 3.001 0 0 0 3.75-.615 3.001 3.001 0 0 0 3.75.615M3.75 9.349l1.102-4.406A1.5 1.5 0 0 1 6.303 3.75h11.394a1.5 1.5 0 0 1 1.451 1.193l1.102 4.406"/></svg>
+                            </div>
+                            <h3 class="card-item__title">Direct Factory Sourcing</h3>
+                            <p class="card-item__text">Direct sourcing creates stronger opportunities for contractor profitability by reducing unnecessary layers between manufacturers and buyers.</p>
+                            <div class="card-item__metric">Higher<span>profit potential</span></div>
                         </div>
 
-                        <!-- Company -->
-                        <div class="form-group" id="form-group-company">
-                            <label for="quote-company" class="form-label">Company Name <span class="required">*</span></label>
-                            <input type="text" id="quote-company" name="company" class="form-input" placeholder="Your company name" required>
-                            <span class="form-error" id="error-company"></span>
+                        <!-- Solution Card 2 -->
+                        <div class="card-item">
+                            <div class="card-item__icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"/></svg>
+                            </div>
+                            <h3 class="card-item__title">Founder-Led Global Quality Verification</h3>
+                            <p class="card-item__text">CB Kitchen actively develops relationships with manufacturers and sourcing partners worldwide to verify quality standards, strengthen supplier relationships, and support long-term growth.</p>
+                            <div class="card-item__metric">Founder-Led<span>Quality Verification</span></div>
                         </div>
 
-                        <!-- Phone -->
-                        <div class="form-group" id="form-group-phone">
-                            <label for="quote-phone" class="form-label">Phone <span class="required">*</span></label>
-                            <input type="tel" id="quote-phone" name="phone" class="form-input" placeholder="(555) 123-4567" required>
-                            <span class="form-error" id="error-phone"></span>
+                        <!-- Solution Card 3 -->
+                        <div class="card-item">
+                            <div class="card-item__icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.129-1.125V11.25M14.25 18.75v-9A2.25 2.25 0 0 0 12 7.5H4.5m18 3H14.25m0-3h3.375a1.125 1.125 0 0 1 1.125 1.125V14.25m-15-7.5v5.25m0 0h5.25"/></svg>
+                            </div>
+                            <h3 class="card-item__title">Priority Logistics Support</h3>
+                            <p class="card-item__text">End-to-end container tracking and customs clearance management. Sourcing members receive guaranteed delivery times for zero delay.</p>
+                            <div class="card-item__metric">100%<span>cleared transit</span></div>
                         </div>
+                    </div>
+                </div>
+            </section>
 
-                        <!-- Email -->
-                        <div class="form-group" id="form-group-email">
-                            <label for="quote-email" class="form-label">Email <span class="required">*</span></label>
-                            <input type="email" id="quote-email" name="email" class="form-input" placeholder="you@company.com" required>
-                            <span class="form-error" id="error-email"></span>
-                        </div>
-
-                        <!-- City / State -->
-                        <div class="form-group form-group--full" id="form-group-location">
-                            <label for="quote-location" class="form-label">City / State</label>
-                            <input type="text" id="quote-location" name="location" class="form-input" placeholder="City, State">
-                        </div>
-
-                        <!-- Project Type -->
-                        <div class="form-group" id="form-group-project-type">
-                            <label for="quote-project-type" class="form-label">Project Type <span class="required">*</span></label>
-                            <select id="quote-project-type" name="projectType" class="form-input form-select" required>
-                                <option value="" disabled selected>Select project type</option>
-                                <option value="kitchen">Kitchen</option>
-                                <option value="bathroom">Bathroom</option>
-                                <option value="cabinets">Cabinets</option>
-                                <option value="multi-unit">Multi-Unit</option>
-                                <option value="commercial">Commercial</option>
-                                <option value="closets">Walk-In Closets</option>
-                                <option value="other">Other</option>
-                            </select>
-                            <span class="form-error" id="error-project-type"></span>
-                        </div>
-
-                        <!-- Estimated Budget -->
-                        <div class="form-group" id="form-group-budget">
-                            <label for="quote-budget" class="form-label">Estimated Budget</label>
-                            <select id="quote-budget" name="budget" class="form-input form-select">
-                                <option value="" disabled selected>Select budget range</option>
-                                <option value="under-25k">Under $25,000</option>
-                                <option value="25k-50k">$25,000 – $50,000</option>
-                                <option value="50k-100k">$50,000 – $100,000</option>
-                                <option value="100k-250k">$100,000 – $250,000</option>
-                                <option value="250k-500k">$250,000 – $500,000</option>
-                                <option value="500k-plus">$500,000+</option>
-                            </select>
-                        </div>
-
-                        <!-- Timeline -->
-                        <div class="form-group form-group--full" id="form-group-timeline">
-                            <label for="quote-timeline" class="form-label">Project Timeline</label>
-                            <select id="quote-timeline" name="timeline" class="form-input form-select">
-                                <option value="" disabled selected>Select timeline</option>
-                                <option value="asap">ASAP</option>
-                                <option value="1-3-months">1 – 3 Months</option>
-                                <option value="3-6-months">3 – 6 Months</option>
-                                <option value="6-12-months">6 – 12 Months</option>
-                                <option value="planning">Still in Planning</option>
-                            </select>
-                        </div>
-
-                        <!-- File Upload -->
-                        <div class="form-group form-group--full" id="form-group-files">
-                            <label class="form-label">Upload Inspiration Photos or Plans</label>
-                            <div class="file-upload" id="file-upload-area">
-                                <input type="file" id="quote-files" name="files" class="file-upload__input" multiple accept="image/*,.pdf">
-                                <div class="file-upload__content">
-                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="file-upload__icon">
-                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                        <polyline points="17 8 12 3 7 8"/>
-                                        <line x1="12" y1="3" x2="12" y2="15"/>
-                                    </svg>
-                                    <p class="file-upload__text">Drag & drop files here or <span class="text-gold">browse</span></p>
-                                    <p class="file-upload__hint">Images & PDFs, max 10MB each, up to 5 files</p>
+            <!-- ═══════════════════════════════════════════════════════
+                 SLIDE 4: VALUE PROPOSITION
+                 ═══════════════════════════════════════════════════════ -->
+            <section class="slide" id="slide-4">
+                <div class="slide__container">
+                    <span class="slide__subtitle slide-element">Financial Value</span>
+                    <h2 class="slide__title slide-element">Commanding Sourcing <span>Value Prop</span></h2>
+                    
+                    <div class="split-view slide-element">
+                        <div class="split-view__left">
+                            <p class="split-view__desc">CB Kitchen removes retail margins and creates substantial margin recovery for builders, general contractors, and remodelers.</p>
+                            
+                            <div class="benefit-bullet-list">
+                                <div class="benefit-bullet">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                                    <div>
+                                        <h4 class="benefit-bullet__title">Founding Member Sourcing Lock</h4>
+                                        <p class="benefit-bullet__text">Early contractor members lock in an annual access rate of $300/year, guaranteed for life.</p>
+                                    </div>
                                 </div>
-                                <div class="file-upload__list" id="file-list"></div>
+                                <div class="benefit-bullet">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                                    <div>
+                                        <h4 class="benefit-bullet__title">Direct Sourcing Access</h4>
+                                        <p class="benefit-bullet__text">Full private catalog access with immediate, unlimited request for quote support.</p>
+                                    </div>
+                                </div>
+                                <div class="benefit-bullet">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                                    <div>
+                                        <h4 class="benefit-bullet__title">High Quality Cabinet Sourcing</h4>
+                                        <p class="benefit-bullet__text">Top-tier finishes, solid wood faces, and premium soft-close hardware sourced globally.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Message -->
-                        <div class="form-group form-group--full" id="form-group-message">
-                            <label for="quote-message" class="form-label">Project Details & Message</label>
-                            <textarea id="quote-message" name="message" class="form-input form-textarea" rows="5" placeholder="Tell us about your project — dimensions, materials, finishes, quantities, special requirements..."></textarea>
+                        <div class="split-view__right">
+                            <div class="stat-box">
+                                <div class="stat-box__number">$15,000</div>
+                                <div class="stat-box__label">Average Savings</div>
+                                <p class="stat-box__text">Based on standard builder cabinet & vanity packages compared to local showroom pricing.</p>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Submit -->
-                    <button type="submit" class="btn-primary quote-form__submit" id="quote-submit-btn">
-                        <span class="btn-text">Submit Project for Review</span>
-                        <span class="btn-loading" aria-hidden="true">
-                            <svg width="20" height="20" viewBox="0 0 24 24" class="spinner"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="31.4" stroke-linecap="round"/></svg>
-                            Processing...
-                        </span>
-                    </button>
-                </form>
-
-                <!-- Success Message (hidden by default) -->
-                <div class="quote-form__success" id="form-success" hidden>
-                    <div class="quote-form__success-icon">
-                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                    </div>
-                    <h3>Project Submitted Successfully</h3>
-                    <p>Thank you for your submission. Our team will review your project details and respond with a custom quote within 24–48 business hours.</p>
-                    <a href="#" class="btn-secondary" id="form-reset-btn">Submit Another Project</a>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
+            <!-- ═══════════════════════════════════════════════════════
+                 SLIDE 5: BUSINESS MODEL
+                 ═══════════════════════════════════════════════════════ -->
+            <section class="slide" id="slide-5">
+                <div class="slide__container">
+                    <span class="slide__subtitle slide-element">Revenue Capture</span>
+                    <h2 class="slide__title slide-element">Our Sourcing <span>Business Model</span></h2>
+                    
+                    <div class="business-model slide-element">
+                        <!-- Revenue Column 1 -->
+                        <div class="model-column">
+                            <div class="model-column__header">
+                                <div class="model-column__icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 5.5A3.5 3.5 0 1 1 11.5 2 3.5 3.5 0 0 1 15 5.5zM7.5 11.5a3.5 3.5 0 1 1-3.5-3.5 3.5 3.5 0 0 1 3.5 3.5zm12 0a3.5 3.5 0 1 1-3.5-3.5 3.5 3.5 0 0 1 3.5 3.5zM15 18.5a3.5 3.5 0 1 1-3.5-3.5 3.5 3.5 0 0 1 3.5 18.5z"/></svg>
+                                </div>
+                                <div>
+                                    <h3 class="model-column__title">Membership Sourcing Fees</h3>
+                                    <p class="model-column__subtitle">Recurring Annual ARR</p>
+                                </div>
+                            </div>
+                            <div class="model-column__details">
+                                <div class="model-column__item">
+                                    <span>Founding Members</span>
+                                    <span>First 500 at $300/year</span>
+                                </div>
+                                <div class="model-column__item">
+                                    <span>Regular Members</span>
+                                    <span>Next 4,500 at $499/year</span>
+                                </div>
+                                <div class="model-column__item">
+                                    <span>Target Members Year 1</span>
+                                    <span>5,000 contractors</span>
+                                </div>
+                            </div>
+                            <div class="model-column__metric">
+                                ARR Potential: $2.39M
+                            </div>
+                        </div>
 
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- PRIVATE CATALOG / MEMBER LOGIN SECTION                      -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <section class="catalog section-padding" id="catalog">
-        <div class="container">
-            <div class="catalog__card reveal">
-                <!-- Decorative Grid Background -->
-                <div class="catalog__pattern" aria-hidden="true"></div>
-
-                <div class="catalog__badge">Members Only</div>
-
-                <div class="catalog__lock-icon" aria-hidden="true">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                        <circle cx="12" cy="16" r="1"/>
-                    </svg>
-                </div>
-
-                <h2 class="catalog__title">Private <span class="text-gold">Catalog</span></h2>
-                <p class="catalog__desc">Access our full product catalog, material options, pricing sheets, and shipping estimates. Available exclusively to verified CB Kitchen members.</p>
-
-                <ul class="catalog__features">
-                    <li>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                        Private Product Catalog
-                    </li>
-                    <li>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                        Material & Finish Options
-                    </li>
-                    <li>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                        Contractor Pricing Sheets
-                    </li>
-                    <li>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                        Shipping Estimates
-                    </li>
-                    <li>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                        Project Quote History
-                    </li>
-                </ul>
-
-                <a href="members/index.html" class="btn-primary catalog__btn" id="catalog-login-btn">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    <span>Member Login</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- FOOTER                                                      -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <footer class="footer" id="footer">
-        <div class="footer__top-line" aria-hidden="true"></div>
-
-        <div class="container">
-            <div class="footer__grid">
-                <!-- Brand Column -->
-                <div class="footer__brand">
-                    <img src="assets/images/logo.png" alt="CB Kitchen" class="footer__logo">
-                    <p class="footer__brand-name">CB Kitchen</p>
-                    <p class="footer__brand-full">Custom Built Kitchen</p>
-                    <p class="footer__brand-tagline">Luxury Contractor Network</p>
-                    <p class="footer__brand-desc">Private luxury sourcing network for contractors, builders, and developers who demand premium quality at better margins.</p>
-                </div>
-
-                <!-- Quick Links -->
-                <div class="footer__links">
-                    <h4 class="footer__heading">Quick Links</h4>
-                    <ul>
-                        <li><a href="#hero">Home</a></li>
-                        <li><a href="#membership">Membership</a></li>
-                        <li><a href="#collections">Collections</a></li>
-                        <li><a href="#how-it-works">How It Works</a></li>
-                        <li><a href="#quality">Quality</a></li>
-                        <li><a href="#quote">Request a Quote</a></li>
-                    </ul>
-                </div>
-
-                <!-- Services -->
-                <div class="footer__links">
-                    <h4 class="footer__heading">Services</h4>
-                    <ul>
-                        <li><a href="#collections">Luxury Kitchens</a></li>
-                        <li><a href="#collections">Custom Cabinets</a></li>
-                        <li><a href="#collections">Bathroom Vanities</a></li>
-                        <li><a href="#collections">Walk-In Closets</a></li>
-                        <li><a href="#collections">Commercial Projects</a></li>
-                        <li><a href="#catalog">Private Catalog</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contact -->
-                <div class="footer__contact">
-                    <h4 class="footer__heading">Contact</h4>
-                    <ul>
-                        <li>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                            <a href="https://cbkitchen.io" target="_blank">CBKitchen.io</a>
-                        </li>
-                        <li>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                            <a href="mailto:info@cbkitchen.io">info@cbkitchen.io</a>
-                        </li>
-                        <li>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                            <a href="tel:+13059638346">+1 (305) 963-8346</a>
-                        </li>
-                    </ul>
-
-                    <!-- Social Icons -->
-                    <div class="footer__social">
-                        <a href="#" class="footer__social-link" aria-label="Instagram">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-                        </a>
-                        <a href="#" class="footer__social-link" aria-label="Facebook">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                        </a>
-                        <a href="#" class="footer__social-link" aria-label="LinkedIn">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-                        </a>
-                        <a href="#" class="footer__social-link" aria-label="YouTube">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.43z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
-                        </a>
+                        <!-- Revenue Column 2 -->
+                        <div class="model-column model-column--highlighted">
+                            <div class="model-column__header">
+                                <div class="model-column__icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2.25 18.75a60.07 60.07 0 0 1 15.797-10.3A12.003 12.003 0 0 0 21 3m0 0h-5.25M21 3v5.25"/></svg>
+                                </div>
+                                <div>
+                                    <h3 class="model-column__title">Project Sourcing Revenue</h3>
+                                    <p class="model-column__subtitle">Margin on Materials</p>
+                                </div>
+                            </div>
+                            <div class="model-column__details">
+                                <div class="model-column__item">
+                                    <span>Typical Project Range</span>
+                                    <span>$10,000 – $25,000+</span>
+                                </div>
+                                <div class="model-column__item">
+                                    <span>Margin Potential</span>
+                                    <span>15% to 20%</span>
+                                </div>
+                                <div class="model-column__item">
+                                    <span>Sourcing Revenue</span>
+                                    <span>Varies By Scope</span>
+                                </div>
+                            </div>
+                            <div class="model-column__metric">
+                                Margin Potential: 15%–20%
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <!-- Bottom Bar -->
-        <div class="footer__bottom">
-            <div class="container">
-                <div class="footer__bottom-inner">
-                    <p class="footer__copyright">© <span id="footer-year">2026</span> CB Kitchen. All rights reserved.</p>
-                    <div class="footer__bottom-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                        <a href="admin/index.html">Admin Portal</a>
+            <!-- ═══════════════════════════════════════════════════════
+                 SLIDE 6: TRACTION & PIPELINE
+                 ═══════════════════════════════════════════════════════ -->
+            <section class="slide" id="slide-6">
+                <div class="slide__container">
+                    <span class="slide__subtitle slide-element">Competitive Advantage</span>
+                    <h2 class="slide__title slide-element">Why Contractors Choose <span>CB Kitchen</span></h2>
+                    
+                    <div class="grid-cards slide-element" style="grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <!-- Value Card 1 -->
+                        <div class="card-item" style="padding: 24px;">
+                            <div class="card-item__icon" style="margin-bottom: 16px;">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a6 6 0 0 0-3.44-5.31m-4.72-.4V10.5m0-3h3.375M12 21a9.003 9.003 0 0 0 8.354-5.646M12 3a9 9 0 0 0-7.79 4.96M3 21h18"/></svg>
+                            </div>
+                            <h3 class="card-item__title" style="font-size: 1.2rem; margin-bottom: 8px;">Direct Factory Relationships</h3>
+                            <p class="card-item__text" style="font-size: 0.85rem; line-height: 1.5;">Access vetted manufacturers directly without unnecessary middlemen.</p>
+                        </div>
+
+                        <!-- Value Card 2 -->
+                        <div class="card-item" style="padding: 24px;">
+                            <div class="card-item__icon" style="margin-bottom: 16px;">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797-10.3A12.003 12.003 0 0 0 21 3m0 0h-5.25M21 3v5.25"/></svg>
+                            </div>
+                            <h3 class="card-item__title" style="font-size: 1.2rem; margin-bottom: 8px;">Higher Contractor Margins</h3>
+                            <p class="card-item__text" style="font-size: 0.85rem; line-height: 1.5;">Designed to improve contractor profitability through direct sourcing.</p>
+                        </div>
+
+                        <!-- Value Card 3 -->
+                        <div class="card-item" style="padding: 24px;">
+                            <div class="card-item__icon" style="margin-bottom: 16px;">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.109A2.25 2.25 0 0112.75 21.5h-1.5a2.25 2.25 0 01-2.25-2.263V19.13m4.72-4.07a9 9 0 00-4.717-.927 9 9 0 00-4.718.927M15 19.128c0-1.102-.168-2.166-.482-3.168M12 11.25a3.375 3.375 0 100-6.75 3.375 3.375 0 000 6.75zM9.75 17.25c0-1.282.265-2.492.742-3.593M9.75 17.25H8.25c-.754 0-1.464-.23-2.052-.625a4.125 4.125 0 014.122-7.125z"/></svg>
+                            </div>
+                            <h3 class="card-item__title" style="font-size: 1.2rem; margin-bottom: 8px;">Private Contractor Network</h3>
+                            <p class="card-item__text" style="font-size: 0.85rem; line-height: 1.5;">Exclusive sourcing access for builders, developers, remodelers, and contractors.</p>
+                        </div>
+
+                        <!-- Value Card 4 -->
+                        <div class="card-item" style="padding: 24px;">
+                            <div class="card-item__icon" style="margin-bottom: 16px;">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"/></svg>
+                            </div>
+                            <h3 class="card-item__title" style="font-size: 1.2rem; margin-bottom: 8px;">Quality Verification Process</h3>
+                            <p class="card-item__text" style="font-size: 0.85rem; line-height: 1.5;">Products and suppliers are reviewed before sourcing recommendations are made.</p>
+                        </div>
+
+                        <!-- Value Card 5 -->
+                        <div class="card-item" style="padding: 24px;">
+                            <div class="card-item__icon" style="margin-bottom: 16px;">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.008 1.24l.885 1.77a2.25 2.25 0 002.007 1.24h1.98a2.25 2.25 0 002.007-1.24l.885-1.77a2.25 2.25 0 012.007-1.24h3.86m-18 0h18M2.25 13.5v-2.25A2.25 2.25 0 014.5 9h15A2.25 2.25 0 0121.75 11.25V13.5m-19.5 0v5.625c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125V13.5M9 5.25h6m-6 0a1.5 1.5 0 00-1.5 1.5v1.5h9V6.75A1.5 1.5 0 0015 5.25h-6z"/></svg>
+                            </div>
+                            <h3 class="card-item__title" style="font-size: 1.2rem; margin-bottom: 8px;">Project-Based Support</h3>
+                            <p class="card-item__text" style="font-size: 0.85rem; line-height: 1.5;">Support for kitchens, vanities, closets, and commercial projects.</p>
+                        </div>
+
+                        <!-- Value Card 6 -->
+                        <div class="card-item" style="padding: 24px;">
+                            <div class="card-item__icon" style="margin-bottom: 16px;">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9s2.015-9 4.5-9m0 0a9.004 9.004 0 018.716 6.747M12 3a9.004 9.004 0 00-8.716 6.747"/></svg>
+                            </div>
+                            <h3 class="card-item__title" style="font-size: 1.2rem; margin-bottom: 8px;">Scalable Supply Chain</h3>
+                            <p class="card-item__text" style="font-size: 0.85rem; line-height: 1.5;">Built to support both small projects and large developments.</p>
+                        </div>
+                    </div>
+                    
+                    <p class="slide-element text-center" style="margin-top: 24px; font-family: var(--font-accent); font-style: italic; font-size: 1.25rem; color: var(--gold);">
+                        Save and make contractors hundreds of thousands a year.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════
+                 SLIDE 7: ROADMAP
+                 ═══════════════════════════════════════════════════════ -->
+            <section class="slide" id="slide-7">
+                <div class="slide__container">
+                    <span class="slide__subtitle slide-element">Growth Milestones</span>
+                    <h2 class="slide__title slide-element">Timeline to Sourcing <span>Scale</span></h2>
+                    
+                    <div class="roadmap-timeline slide-element">
+                        <!-- Roadmap Step 1 -->
+                        <div class="roadmap-step roadmap-step--completed">
+                            <div class="roadmap-step__dot">✓</div>
+                            <span class="roadmap-step__phase">Phase 1 (Completed)</span>
+                            <h3 class="roadmap-step__title">Vetted Sourcing Channels</h3>
+                            <p class="roadmap-step__text">Direct-to-factory relationships locked in. Transparent PNG assets processed, favicon favicon linked, local directories synced.</p>
+                        </div>
+
+                        <!-- Roadmap Step 2 -->
+                        <div class="roadmap-step roadmap-step--active">
+                            <div class="roadmap-step__dot">2</div>
+                            <span class="roadmap-step__phase">Phase 2 (Current)</span>
+                            <h3 class="roadmap-step__title">Catalog & Portal Launch</h3>
+                            <p class="roadmap-step__text">Online quote system active. Private member portal and admin application management system deployment across target environments.</p>
+                        </div>
+
+                        <!-- Roadmap Step 3 -->
+                        <div class="roadmap-step">
+                            <div class="roadmap-step__dot">3</div>
+                            <span class="roadmap-step__phase">Phase 3 (Future)</span>
+                            <h3 class="roadmap-step__title">Global Procurement Scale</h3>
+                            <p class="roadmap-step__text">Launch container shipments directly to major markets. Expanding material categories to stone countertops, fixtures, and appliances.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════
+                 SLIDE 8: OPPORTUNITY
+                 ═══════════════════════════════════════════════════════ -->
+            <section class="slide" id="slide-8">
+                <div class="slide__container">
+                    <span class="slide__subtitle slide-element">Investment Detail</span>
+                    <h2 class="slide__title slide-element">Investment <span>Opportunity</span></h2>
+                    
+                    <div class="contact-grid slide-element">
+                        <div class="contact-card">
+                            <h3 class="contact-card__title">Direct Sourcing Contact</h3>
+                            <div class="contact-card__links">
+                                <div class="contact-card__link">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                    <a href="https://cbkitchen.io" target="_blank">CBKitchen.io</a>
+                                </div>
+                                <div class="contact-card__link">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                    <a href="mailto:support@cbkitchen.io">support@cbkitchen.io</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-cta">
+                            <p class="contact-cta__text">We are raising funding to scale container-level direct sourcing and expand our QC inspection teams. Access our live private catalogs, pricing sheets, and admin systems below.</p>
+                            <div>
+                                <button class="contact-cta__btn" onclick="window.open('../index.html', '_blank')">
+                                    <span>Explore Live Platform</span>
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </div>
+    </main>
+
+
+    <!-- ─── CONTROLS FOOTER ─── -->
+    <footer class="pres-footer">
+        <div class="pres-footer__progress-container" id="progress-container" title="Click to Jump to Slide">
+            <div class="pres-footer__progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="pres-footer__controls">
+            <button class="pres-footer__btn" id="btn-prev" aria-label="Previous Slide">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="pres-footer__btn" id="btn-next" aria-label="Next Slide">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <button class="pres-footer__btn" id="btn-play" aria-label="Play Slideshow">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </button>
+            <span class="pres-footer__nav-text">Controls</span>
+        </div>
+        
+        <button class="pres-footer__btn" id="btn-overview" title="Toggle Slide Overview (Key: O)">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </button>
     </footer>
 
 
+    <!-- ─── HELP MODAL OVERLAY ─── -->
+    <div class="help-overlay" id="help-overlay" role="dialog" aria-modal="true" aria-labelledby="help-title">
+        <div class="help-modal">
+            <h3 class="help-modal__title" id="help-title">Presentation Keyboard Shortcuts</h3>
+            <div class="help-modal__shortcuts">
+                <div class="help-modal__row">
+                    <span>Next Slide</span>
+                    <div>
+                        <span class="help-modal__key">→</span> or <span class="help-modal__key">Space</span>
+                    </div>
+                </div>
+                <div class="help-modal__row">
+                    <span>Previous Slide</span>
+                    <span class="help-modal__key">←</span>
+                </div>
+                <div class="help-modal__row">
+                    <span>First Slide</span>
+                    <span class="help-modal__key">Home</span>
+                </div>
+                <div class="help-modal__row">
+                    <span>Last Slide</span>
+                    <span class="help-modal__key">End</span>
+                </div>
+                <div class="help-modal__row">
+                    <span>Toggle Overview Grid</span>
+                    <span class="help-modal__key">O</span>
+                </div>
+                <div class="help-modal__row">
+                    <span>Toggle Fullscreen</span>
+                    <span class="help-modal__key">F</span>
+                </div>
+                <div class="help-modal__row">
+                    <span>Close Modal / Exit Grid</span>
+                    <span class="help-modal__key">Esc</span>
+                </div>
+            </div>
+            <button class="help-modal__close-btn" id="btn-close-help">Dismiss</button>
+        </div>
+    </div>
+
+
     <!-- Scripts -->
-    <script src="js/animations.js"></script>
-    <script src="js/navigation.js"></script>
-    <script src="js/form.js"></script>
-    <script src="js/main.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>
