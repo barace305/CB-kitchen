@@ -61,6 +61,15 @@
   max-height: 95px;
 }
 
+@media (max-width: 1023px) {
+  .header__logo-img {
+    max-height: 65px;
+  }
+  .header--scrolled .header__logo-img {
+    max-height: 50px;
+  }
+}
+
 
 
 
@@ -259,13 +268,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: var(--space-xl);
+  justify-content: flex-start;
+  gap: var(--space-md);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: opacity var(--transition-slow),
               visibility var(--transition-slow);
+  padding: 100px 24px 60px;
+  overflow-y: auto;
 }
 
 /* When body has nav-open, show mobile nav */
