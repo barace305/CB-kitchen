@@ -3,13 +3,28 @@
   "redirects": [
     {
       "source": "/member",
-      "destination": "/members/",
+      "destination": "/members",
       "permanent": true
     },
     {
       "source": "/member/:path*",
       "destination": "/members/:path*",
       "permanent": true
+    },
+    {
+      "source": "/members/",
+      "destination": "/members",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/members",
+      "destination": "/members/index.html"
     }
   ]
 }

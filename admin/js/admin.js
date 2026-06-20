@@ -1,208 +1,95 @@
-/* ═══════════════════════════════════════════════════════
-   CB KITCHEN — ADMIN DASHBOARD JAVASCRIPT
-   Mock Auth · localStorage CRUD · Search · Filter · CSV Export
-   ═══════════════════════════════════════════════════════ */
+/* ============================================================
+   CB KITCHEN — ADMIN PANEL LOGICAL ENGINE
+   Unified Members · Status Progression · Notes Logs · CSV Export
+   ============================================================ */
 
 (function () {
   'use strict';
 
-  // ─── CONSTANTS ───
-  const CREDENTIALS = { username: 'admin', password: 'cbkitchen2026' };
+  // ─── CREDENTIALS CONFIGURATION ───
+  // CRITICAL SECURITY NOTE: In a production environment, this hardcoded 
+  // check should be replaced with an API call returning a JWT token 
+  // or a secure HttpOnly cookie session check. Environment variables 
+  // would be used on the backend.
+  const ADMIN_CREDENTIALS = {
+    usernames: ['admin', 'tone'],
+    passwords: ['TONE1234', 'cbkitchen2026']
+  };
+
   const STORAGE_KEYS = {
     session: 'cbk_admin_session',
-    applications: 'cbk_applications',
     members: 'cbk_members',
     quotes: 'cbk_quotes',
     seeded: 'cbk_data_seeded'
   };
 
-  // ─── DOM REFERENCES ───
+  // ─── DOM SELECTORS ───
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => document.querySelectorAll(sel);
 
-  const dom = {
-    loginScreen: $('#loginScreen'),
-    loginForm: $('#loginForm'),
-    loginUsername: $('#loginUsername'),
-    loginPassword: $('#loginPassword'),
-    loginError: $('#loginError'),
-    dashboard: $('#adminDashboard'),
-    sidebar: $('#sidebar'),
-    sidebarOverlay: $('#sidebarOverlay'),
-    hamburgerBtn: $('#hamburgerBtn'),
-    logoutBtn: $('#logoutBtn'),
+  const dom = {};
+
+  function cacheDom() {
+    dom.loginScreen = $('#loginScreen');
+    dom.loginForm = $('#loginForm');
+    dom.loginUsername = $('#loginUsername');
+    dom.loginPassword = $('#loginPassword');
+    dom.loginError = $('#loginError');
+    dom.dashboard = $('#adminDashboard');
+    dom.sidebar = $('#sidebar');
+    dom.sidebarOverlay = $('#sidebarOverlay');
+    dom.hamburgerBtn = $('#hamburgerBtn');
+    dom.logoutBtn = $('#logoutBtn');
+    
     // Stats
-    statApplications: $('#statApplications'),
-    statMembers: $('#statMembers'),
-    statPending: $('#statPending'),
-    statQuotes: $('#statQuotes'),
-    // Dashboard tables
-    recentApplicationsTable: $('#recentApplicationsTable'),
-    recentQuotesTable: $('#recentQuotesTable'),
-    // Application page
-    applicationsTable: $('#applicationsTable'),
-    appSearch: $('#appSearch'),
-    appStatusFilter: $('#appStatusFilter'),
-    appEmptyState: $('#appEmptyState'),
-    exportApplicationsBtn: $('#exportApplicationsBtn'),
-    // Members page
-    membersTable: $('#membersTable'),
-    memberSearch: $('#memberSearch'),
-    memberEmptyState: $('#memberEmptyState'),
-    exportMembersBtn: $('#exportMembersBtn'),
-    // Quotes page
-    quotesTable: $('#quotesTable'),
-    quoteSearch: $('#quoteSearch'),
-    quoteTypeFilter: $('#quoteTypeFilter'),
-    quoteEmptyState: $('#quoteEmptyState'),
-    exportQuotesBtn: $('#exportQuotesBtn'),
+    dom.statMembers = $('#statMembers');
+    dom.statActive = $('#statActive');
+    dom.statPending = $('#statPending');
+    dom.statQuotes = $('#statQuotes');
+    
+    // Dashboard Tables
+    dom.recentApplicationsTable = $('#recentApplicationsTable');
+    dom.recentQuotesTable = $('#recentQuotesTable');
+    
+    // Members Section
+    dom.membersTable = $('#membersTable');
+    dom.memberSearch = $('#memberSearch');
+    dom.memberStatusFilter = $('#memberStatusFilter');
+    dom.memberEmptyState = $('#memberEmptyState');
+    dom.exportMembersBtn = $('#exportMembersBtn');
+    
+    // Quotes Section
+    dom.quotesTable = $('#quotesTable');
+    dom.quoteSearch = $('#quoteSearch');
+    dom.quoteStatusFilter = $('#quoteStatusFilter');
+    dom.quoteEmptyState = $('#quoteEmptyState');
+    dom.exportQuotesBtn = $('#exportQuotesBtn');
+    
+    // Custom Builds Section
+    dom.customBuildsTable = $('#customBuildsTable');
+    dom.customSearch = $('#customSearch');
+    dom.customStatusFilter = $('#customStatusFilter');
+    dom.customEmptyState = $('#customEmptyState');
+    dom.exportCustomBtn = $('#exportCustomBtn');
+    
     // Modal
-    detailModal: $('#detailModal'),
-    modalTitle: $('#modalTitle'),
-    modalBody: $('#modalBody'),
-    modalFooter: $('#modalFooter'),
-    modalCloseBtn: $('#modalCloseBtn'),
+    dom.detailModal = $('#detailModal');
+    dom.modalTitle = $('#modalTitle');
+    dom.modalBody = $('#modalBody');
+    dom.modalFooter = $('#modalFooter');
+    dom.modalCloseBtn = $('#modalCloseBtn');
+    
     // Toast
-    toast: $('#toast')
-  };
+    dom.toast = $('#toast');
+  }
 
   // ═══════════════════════════════════════════════════════
-  // SEED DATA
+  // SEED LOGIC (IF NOT SEEDED)
   // ═══════════════════════════════════════════════════════
-  function seedData() {
+  function seedInitialData() {
     if (localStorage.getItem(STORAGE_KEYS.seeded)) return;
 
-    const applications = [
-      {
-        id: 'APP-001',
-        date: '2026-05-15',
-        firstName: 'Marcus',
-        lastName: 'Reynolds',
-        company: 'Reynolds Custom Builds',
-        email: 'marcus@reynoldscb.com',
-        phone: '(305) 555-0142',
-        businessType: 'General Contractor',
-        experience: '12 years',
-        monthlyInvestment: '$5,000 - $10,000',
-        licenseNumber: 'GC-2019-4421',
-        serviceArea: 'Miami-Dade County, FL',
-        description: 'Specializing in luxury kitchen and bathroom remodels for high-end residential clients. Looking to expand material sourcing network.',
-        status: 'Pending'
-      },
-      {
-        id: 'APP-002',
-        date: '2026-05-12',
-        firstName: 'Elena',
-        lastName: 'Vasquez',
-        company: 'Vasquez Interior Design',
-        email: 'elena@vasquezinteriors.com',
-        phone: '(212) 555-0198',
-        businessType: 'Interior Designer',
-        experience: '8 years',
-        monthlyInvestment: '$3,000 - $5,000',
-        licenseNumber: 'ID-NY-7832',
-        serviceArea: 'Manhattan & Brooklyn, NY',
-        description: 'High-end residential interior design firm. Focus on modern luxury kitchens with European cabinetry and premium countertops.',
-        status: 'Approved'
-      },
-      {
-        id: 'APP-003',
-        date: '2026-05-10',
-        firstName: 'David',
-        lastName: 'Chen',
-        company: 'Pacific Edge Construction',
-        email: 'david@pacificedge.co',
-        phone: '(415) 555-0173',
-        businessType: 'General Contractor',
-        experience: '15 years',
-        monthlyInvestment: '$10,000 - $25,000',
-        licenseNumber: 'CSLB-892341',
-        serviceArea: 'San Francisco Bay Area, CA',
-        description: 'Full-service renovation company handling luxury residential and boutique commercial projects. Seeking premium cabinet and fixture suppliers.',
-        status: 'Approved'
-      },
-      {
-        id: 'APP-004',
-        date: '2026-05-08',
-        firstName: 'Sarah',
-        lastName: 'Mitchell',
-        company: 'Mitchell & Co. Renovations',
-        email: 'sarah@mitchellreno.com',
-        phone: '(773) 555-0156',
-        businessType: 'Kitchen & Bath Specialist',
-        experience: '6 years',
-        monthlyInvestment: '$2,000 - $5,000',
-        licenseNumber: 'IL-KB-55209',
-        serviceArea: 'Chicago Metro Area, IL',
-        description: 'Dedicated kitchen and bathroom renovation firm. Growing rapidly with focus on mid-to-high-end residential market.',
-        status: 'Pending'
-      },
-      {
-        id: 'APP-005',
-        date: '2026-05-05',
-        firstName: 'James',
-        lastName: 'Whitmore',
-        company: 'Whitmore Development Group',
-        email: 'james@whitmoredev.com',
-        phone: '(404) 555-0129',
-        businessType: 'Developer / Builder',
-        experience: '20 years',
-        monthlyInvestment: '$25,000+',
-        licenseNumber: 'GA-DB-1120',
-        serviceArea: 'Atlanta Metro, GA',
-        description: 'Luxury home builder constructing 15-20 custom homes per year. Need consistent supply of premium kitchen and bath fixtures.',
-        status: 'Approved'
-      },
-      {
-        id: 'APP-006',
-        date: '2026-05-02',
-        firstName: 'Ashley',
-        lastName: 'Drummond',
-        company: 'AD Studio Kitchen Design',
-        email: 'ashley@adstudiokd.com',
-        phone: '(310) 555-0187',
-        businessType: 'Kitchen Designer',
-        experience: '4 years',
-        monthlyInvestment: '$1,000 - $3,000',
-        licenseNumber: 'CA-KD-9021',
-        serviceArea: 'Los Angeles, CA',
-        description: 'Boutique kitchen design studio serving affluent Westside LA clients. Interested in exclusive European imports.',
-        status: 'Denied'
-      },
-      {
-        id: 'APP-007',
-        date: '2026-04-28',
-        firstName: 'Robert',
-        lastName: 'Nakamura',
-        company: 'Nakamura Fine Carpentry',
-        email: 'robert@nakamurafc.com',
-        phone: '(503) 555-0145',
-        businessType: 'Cabinet Maker',
-        experience: '18 years',
-        monthlyInvestment: '$5,000 - $10,000',
-        licenseNumber: 'OR-CM-3388',
-        serviceArea: 'Portland Metro, OR',
-        description: 'Custom cabinet shop building bespoke kitchen cabinetry. Seeking premium hardware, hinges, and specialty wood sources.',
-        status: 'Pending'
-      },
-      {
-        id: 'APP-008',
-        date: '2026-04-25',
-        firstName: 'Priya',
-        lastName: 'Sharma',
-        company: 'Sharma Luxury Interiors',
-        email: 'priya@sharmaluxury.com',
-        phone: '(832) 555-0164',
-        businessType: 'Interior Designer',
-        experience: '10 years',
-        monthlyInvestment: '$5,000 - $10,000',
-        licenseNumber: 'TX-ID-7741',
-        serviceArea: 'Houston, TX',
-        description: 'Full-service luxury interior design with specialisation in kitchen and living spaces. Portfolio includes multiple award-winning projects.',
-        status: 'Pending'
-      }
-    ];
-
+    // Seed unified member list
     const members = [
       {
         id: 'MEM-001',
@@ -212,8 +99,12 @@
         company: 'Vasquez Interior Design',
         email: 'elena@vasquezinteriors.com',
         phone: '(212) 555-0198',
+        city: 'New York',
+        state: 'NY',
         tier: 'Professional',
-        status: 'Active'
+        status: 'Active',
+        password: 'member123',
+        notes: 'Premium partner. Focuses on high-gloss kitchens.'
       },
       {
         id: 'MEM-002',
@@ -223,8 +114,12 @@
         company: 'Pacific Edge Construction',
         email: 'david@pacificedge.co',
         phone: '(415) 555-0173',
+        city: 'San Francisco',
+        state: 'CA',
         tier: 'Enterprise',
-        status: 'Active'
+        status: 'Active',
+        password: 'member123',
+        notes: 'GC doing high volume luxury condos.'
       },
       {
         id: 'MEM-003',
@@ -234,8 +129,12 @@
         company: 'Whitmore Development Group',
         email: 'james@whitmoredev.com',
         phone: '(404) 555-0129',
+        city: 'Atlanta',
+        state: 'GA',
         tier: 'Enterprise',
-        status: 'Active'
+        status: 'Active',
+        password: 'member123',
+        notes: 'Developer constructing 15+ custom estates per year.'
       },
       {
         id: 'MEM-004',
@@ -245,108 +144,113 @@
         company: 'Ferrara Design Co.',
         email: 'nicole@ferraradesign.com',
         phone: '(617) 555-0133',
+        city: 'Boston',
+        state: 'MA',
         tier: 'Professional',
-        status: 'Suspended'
+        status: 'Suspended',
+        password: 'member123',
+        notes: 'Account suspended pending license renewal verification.'
+      },
+      {
+        id: 'MEM-005',
+        memberSince: '2026-06-01',
+        firstName: 'Marcus',
+        lastName: 'Reynolds',
+        company: 'Reynolds Custom Builds',
+        email: 'marcus@reynoldscb.com',
+        phone: '(305) 555-0142',
+        city: 'Miami',
+        state: 'FL',
+        tier: 'Founding Member',
+        status: 'Pending',
+        password: 'member123',
+        notes: 'Wants sourcing access for direct factory kitchen lines.'
+      },
+      {
+        id: 'MEM-006',
+        memberSince: '2026-06-03',
+        firstName: 'Sarah',
+        lastName: 'Mitchell',
+        company: 'Mitchell & Co. Renovations',
+        email: 'sarah@mitchellreno.com',
+        phone: '(773) 555-0156',
+        city: 'Chicago',
+        state: 'IL',
+        tier: 'Founding Member',
+        status: 'Pending',
+        password: 'member123',
+        notes: 'Remodeler seeking bathroom vanities container sourcing.'
       }
     ];
 
+    // Seed quotes/custom builds
     const quotes = [
       {
         id: 'QTE-001',
         date: '2026-05-20',
-        firstName: 'Thomas',
-        lastName: 'Garcia',
-        company: 'Garcia Home Builders',
-        email: 'thomas@garciahb.com',
-        phone: '(469) 555-0181',
-        projectType: 'Kitchen Remodel',
+        memberId: 'MEM-003',
+        memberName: 'James Whitmore',
+        companyName: 'Whitmore Development Group',
+        email: 'james@whitmoredev.com',
+        phone: '(404) 555-0129',
+        projectType: 'Kitchen Sourcing',
+        designName: 'Warm Contemporary',
+        preferredMaterials: 'Walnut cabinet finishes, Calacatta gold countertops',
         budget: '$75,000 - $100,000',
         timeline: '3-4 months',
-        description: 'Complete luxury kitchen remodel for 4,200 sq ft estate. Italian marble countertops, custom walnut cabinetry, Sub-Zero & Wolf appliance package. Client wants a chef-grade layout with butler pantry.',
-        status: 'New'
+        description: 'Complete luxury kitchen remodel for estate. Butler pantry addition required.',
+        isCustom: false,
+        files: ['kitchen_elevations.pdf'],
+        status: 'New',
+        adminNotes: 'Direct factory request submitted. Waiting on panel drafts.'
       },
       {
         id: 'QTE-002',
         date: '2026-05-18',
-        firstName: 'Laura',
-        lastName: 'Kingsley',
-        company: 'Kingsley Renovations',
-        email: 'laura@kingsleyreno.com',
-        phone: '(602) 555-0152',
-        projectType: 'Bathroom Remodel',
+        memberId: 'MEM-001',
+        memberName: 'Elena Vasquez',
+        companyName: 'Vasquez Interior Design',
+        email: 'elena@vasquezinteriors.com',
+        phone: '(212) 555-0198',
+        projectType: 'Bathroom Sourcing',
+        designName: 'Luxury Vanity Line',
+        preferredMaterials: 'Double floating oak vanity, gold brackets',
         budget: '$40,000 - $60,000',
         timeline: '6-8 weeks',
-        description: 'Master bathroom renovation in Scottsdale luxury home. Heated floors, rain shower system, freestanding soaking tub, custom vanity with dual sinks.',
-        status: 'Reviewed'
+        description: 'Master bathroom renovation. Heated floor layout and double vanities.',
+        isCustom: false,
+        files: [],
+        status: 'Reviewing',
+        adminNotes: 'Reviewed design scale. Quoting marble slabs.'
       },
       {
         id: 'QTE-003',
-        date: '2026-05-14',
-        firstName: 'Michael',
-        lastName: 'O\'Brien',
-        company: 'O\'Brien & Sons Construction',
-        email: 'michael@obriensc.com',
-        phone: '(617) 555-0174',
-        projectType: 'Full Home Renovation',
-        budget: '$200,000 - $350,000',
-        timeline: '6-8 months',
-        description: 'Complete renovation of 1920s Brookline brownstone. Three full bathrooms, chef kitchen, butler pantry, wet bar. Must preserve period details while modernising infrastructure.',
-        status: 'Quoted'
-      },
-      {
-        id: 'QTE-004',
-        date: '2026-05-10',
-        firstName: 'Jennifer',
-        lastName: 'Park',
-        company: 'Park Design Studio',
-        email: 'jennifer@parkdesign.com',
-        phone: '(206) 555-0193',
-        projectType: 'Cabinet Installation',
-        budget: '$25,000 - $40,000',
-        timeline: '3-4 weeks',
-        description: 'Custom cabinet installation for new construction home in Bellevue. White oak shaker cabinets with soft-close, pull-out organizers, and integrated lighting.',
-        status: 'New'
-      },
-      {
-        id: 'QTE-005',
-        date: '2026-05-06',
-        firstName: 'Anthony',
-        lastName: 'Rossi',
-        company: 'Rossi Commercial Interiors',
-        email: 'anthony@rossicommercial.com',
-        phone: '(702) 555-0168',
-        projectType: 'Commercial Build-Out',
-        budget: '$150,000 - $250,000',
-        timeline: '4-5 months',
-        description: 'Upscale restaurant kitchen build-out in Las Vegas. Commercial-grade stainless fixtures, custom prep stations, walk-in cooler/freezer, display kitchen for front-of-house.',
-        status: 'Reviewed'
-      },
-      {
-        id: 'QTE-006',
-        date: '2026-04-29',
-        firstName: 'Catherine',
-        lastName: 'Wells',
-        company: 'Wells & Associates',
-        email: 'catherine@wellsassoc.com',
-        phone: '(312) 555-0141',
-        projectType: 'Kitchen Remodel',
-        budget: '$50,000 - $75,000',
-        timeline: '2-3 months',
-        description: 'Modern minimalist kitchen remodel for Gold Coast condo. Waterfall quartz island, handleless cabinetry, integrated appliances, under-cabinet LED system.',
-        status: 'Closed'
+        date: '2026-06-02',
+        memberId: 'MEM-002',
+        memberName: 'David Chen',
+        companyName: 'Pacific Edge Construction',
+        email: 'david@pacificedge.co',
+        phone: '(415) 555-0173',
+        projectType: 'Full Custom Project',
+        designName: 'Custom: Oakland Hills Villa',
+        preferredMaterials: 'Exotic teak details, matte black cabinets, concrete slabs',
+        budget: '$100,000+',
+        timeline: '12+ weeks',
+        description: 'Dimensions: 34ft width, 10ft height custom layout. Notes: Architectural elevations attached.',
+        isCustom: true,
+        files: ['villa_level_1.pdf', 'kitchen_layout_rendered.jpg'],
+        status: 'New',
+        adminNotes: 'Sourcing blueprints received. Initial layout matching started.'
       }
     ];
 
-    localStorage.setItem(STORAGE_KEYS.applications, JSON.stringify(applications));
     localStorage.setItem(STORAGE_KEYS.members, JSON.stringify(members));
     localStorage.setItem(STORAGE_KEYS.quotes, JSON.stringify(quotes));
     localStorage.setItem(STORAGE_KEYS.seeded, 'true');
   }
 
-  // ═══════════════════════════════════════════════════════
-  // DATA HELPERS
-  // ═══════════════════════════════════════════════════════
-  function getData(key) {
+  // ─── DATA ACCESSORS ───
+  function getDatabase(key) {
     try {
       return JSON.parse(localStorage.getItem(key)) || [];
     } catch {
@@ -354,90 +258,77 @@
     }
   }
 
-  function setData(key, data) {
+  function setDatabase(key, data) {
     localStorage.setItem(key, JSON.stringify(data));
   }
 
-  function formatDate(dateStr) {
-    if (!dateStr) return '—';
-    const d = new Date(dateStr + 'T00:00:00');
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  }
-
-  function statusClass(status) {
-    return status.toLowerCase().replace(/\s+/g, '-');
-  }
-
-  function escapeHtml(str) {
-    if (!str) return '';
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
   // ═══════════════════════════════════════════════════════
-  // AUTHENTICATION
+  // LOGIN / ROUTING
   // ═══════════════════════════════════════════════════════
   function isLoggedIn() {
     return localStorage.getItem(STORAGE_KEYS.session) === 'authenticated';
   }
 
-  function login(username, password) {
-    if (username === CREDENTIALS.username && password === CREDENTIALS.password) {
+  function handleLogin(e) {
+    e.preventDefault();
+    const user = dom.loginUsername.value.trim();
+    const pass = dom.loginPassword.value.trim();
+
+    const isUsernameOk = ADMIN_CREDENTIALS.usernames.includes(user.toLowerCase());
+    const isPasswordOk = ADMIN_CREDENTIALS.passwords.some(p => pass.toLowerCase() === p.toLowerCase());
+
+    if (isUsernameOk && isPasswordOk) {
       localStorage.setItem(STORAGE_KEYS.session, 'authenticated');
-      return true;
+      showDashboardView();
+    } else {
+      dom.loginError.style.display = 'flex';
+      dom.loginPassword.value = '';
+      dom.loginPassword.focus();
     }
-    return false;
   }
 
-  function logout() {
+  function handleLogout() {
     localStorage.removeItem(STORAGE_KEYS.session);
-    showLogin();
+    showLoginScreen();
   }
 
-  function showLogin() {
+  function showLoginScreen() {
     dom.loginScreen.style.display = 'flex';
     dom.dashboard.style.display = 'none';
-    dom.loginError.style.display = 'none';
     dom.loginUsername.value = '';
     dom.loginPassword.value = '';
-    dom.loginUsername.focus();
+    dom.loginError.style.display = 'none';
   }
 
-  function showDashboard() {
+  function showDashboardView() {
     dom.loginScreen.style.display = 'none';
     dom.dashboard.style.display = 'flex';
     navigateTo('dashboard');
   }
 
-  // ═══════════════════════════════════════════════════════
-  // NAVIGATION
-  // ═══════════════════════════════════════════════════════
   let currentPage = 'dashboard';
-
   function navigateTo(page) {
     currentPage = page;
 
-    // Update nav active state
+    // Sidebar indicators
     $$('.nav-item[data-page]').forEach(item => {
       item.classList.toggle('active', item.dataset.page === page);
     });
 
-    // Show/hide pages
-    $$('.page').forEach(p => p.classList.remove('active'));
+    // Toggle layouts
+    $$('.page').forEach(el => el.classList.remove('active'));
     const target = $(`#page-${page}`);
     if (target) target.classList.add('active');
 
-    // Close mobile sidebar
-    closeMobileSidebar();
+    // Close mobile sidebars
+    dom.sidebar.classList.remove('open');
+    dom.sidebarOverlay.classList.remove('active');
+    dom.hamburgerBtn.classList.remove('active');
 
-    // Refresh page data
+    // Load data
     switch (page) {
       case 'dashboard':
         renderDashboard();
-        break;
-      case 'applications':
-        renderApplications();
         break;
       case 'members':
         renderMembers();
@@ -445,490 +336,447 @@
       case 'quotes':
         renderQuotes();
         break;
+      case 'custom-builds':
+        renderCustomBuilds();
+        break;
     }
   }
 
-  function closeMobileSidebar() {
-    dom.sidebar.classList.remove('open');
-    dom.sidebarOverlay.classList.remove('active');
-    dom.hamburgerBtn.classList.remove('active');
-  }
+  // ═══════════════════════════════════════════════════════
+  // VIEW RENDERERS
+  // ═══════════════════════════════════════════════════════
 
-  // ═══════════════════════════════════════════════════════
-  // DASHBOARD OVERVIEW
-  // ═══════════════════════════════════════════════════════
+  // ── Dashboard Overview ──
   function renderDashboard() {
-    const apps = getData(STORAGE_KEYS.applications);
-    const members = getData(STORAGE_KEYS.members);
-    const quotes = getData(STORAGE_KEYS.quotes);
+    const members = getDatabase(STORAGE_KEYS.members);
+    const quotes = getDatabase(STORAGE_KEYS.quotes);
 
-    // Stats
-    animateCounter(dom.statApplications, apps.length);
-    animateCounter(dom.statMembers, members.filter(m => m.status === 'Active').length);
-    animateCounter(dom.statPending, apps.filter(a => a.status === 'Pending').length);
-    animateCounter(dom.statQuotes, quotes.length);
+    // Stats Computation
+    animateCounter($('#statMembers'), members.length);
+    animateCounter($('#statActive'), members.filter(m => m.status === 'Active').length);
+    animateCounter($('#statPending'), members.filter(m => m.status === 'Pending').length);
+    animateCounter($('#statQuotes'), quotes.length);
 
-    // Recent applications (last 10)
-    const recentApps = [...apps].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
-    dom.recentApplicationsTable.innerHTML = recentApps.length
-      ? recentApps.map(a => `
+    // Recent member registrations (last 5 sorted by joined date)
+    const recentMembers = [...members].sort((a,b) => new Date(b.memberSince) - new Date(a.memberSince)).slice(0, 5);
+    dom.recentApplicationsTable.innerHTML = recentMembers.length
+      ? recentMembers.map(m => `
           <tr>
-            <td>${formatDate(a.date)}</td>
-            <td>${escapeHtml(a.firstName)} ${escapeHtml(a.lastName)}</td>
-            <td>${escapeHtml(a.company)}</td>
-            <td>${escapeHtml(a.businessType)}</td>
-            <td><span class="status-badge ${statusClass(a.status)}">${escapeHtml(a.status)}</span></td>
+            <td>${formatDate(m.memberSince)}</td>
+            <td><strong>${escapeHtml(m.firstName)} ${escapeHtml(m.lastName)}</strong></td>
+            <td>${escapeHtml(m.company)}</td>
+            <td>${escapeHtml(m.city)}, ${escapeHtml(m.state)}</td>
+            <td><span class="status-badge ${statusClass(m.status)}">${escapeHtml(m.status)}</span></td>
           </tr>
         `).join('')
-      : '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px;">No applications yet</td></tr>';
+      : '<tr><td colspan="5" class="table-empty-notice">No contractor registrations logged</td></tr>';
 
-    // Recent quotes (last 10)
-    const recentQuotes = [...quotes].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+    // Recent sourcing orders (last 5 sorted by date)
+    const recentQuotes = [...quotes].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
     dom.recentQuotesTable.innerHTML = recentQuotes.length
       ? recentQuotes.map(q => `
           <tr>
             <td>${formatDate(q.date)}</td>
-            <td>${escapeHtml(q.firstName)} ${escapeHtml(q.lastName)}</td>
-            <td>${escapeHtml(q.projectType)}</td>
-            <td>${escapeHtml(q.budget)}</td>
+            <td><strong>${escapeHtml(q.companyName)}</strong></td>
+            <td>${escapeHtml(q.designName)}</td>
+            <td><span class="type-tag ${q.isCustom ? 'custom' : 'catalog'}">${q.isCustom ? 'Custom' : 'Catalog'}</span></td>
             <td><span class="status-badge ${statusClass(q.status)}">${escapeHtml(q.status)}</span></td>
           </tr>
         `).join('')
-      : '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px;">No quotes yet</td></tr>';
+      : '<tr><td colspan="5" class="table-empty-notice">No sourcing requests logged</td></tr>';
   }
 
-  function animateCounter(el, target) {
-    const current = parseInt(el.textContent) || 0;
-    if (current === target) { el.textContent = target; return; }
-    const duration = 600;
-    const start = performance.now();
-    function step(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(current + (target - current) * eased);
-      if (progress < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  // ═══════════════════════════════════════════════════════
-  // APPLICATIONS
-  // ═══════════════════════════════════════════════════════
-  function getFilteredApplications() {
-    let apps = getData(STORAGE_KEYS.applications);
-    const search = (dom.appSearch.value || '').toLowerCase().trim();
-    const status = dom.appStatusFilter.value;
-
-    if (search) {
-      apps = apps.filter(a =>
-        `${a.firstName} ${a.lastName}`.toLowerCase().includes(search) ||
-        (a.company || '').toLowerCase().includes(search) ||
-        (a.email || '').toLowerCase().includes(search)
-      );
-    }
-
-    if (status !== 'all') {
-      apps = apps.filter(a => a.status === status);
-    }
-
-    return apps.sort((a, b) => new Date(b.date) - new Date(a.date));
-  }
-
-  function renderApplications() {
-    const apps = getFilteredApplications();
-
-    if (apps.length === 0) {
-      dom.applicationsTable.innerHTML = '';
-      dom.appEmptyState.style.display = 'block';
-      return;
-    }
-
-    dom.appEmptyState.style.display = 'none';
-    dom.applicationsTable.innerHTML = apps.map(a => `
-      <tr>
-        <td>${formatDate(a.date)}</td>
-        <td>${escapeHtml(a.firstName)} ${escapeHtml(a.lastName)}</td>
-        <td>${escapeHtml(a.company)}</td>
-        <td>${escapeHtml(a.email)}</td>
-        <td class="hide-mobile">${escapeHtml(a.phone)}</td>
-        <td class="hide-tablet">${escapeHtml(a.businessType)}</td>
-        <td class="hide-tablet">${escapeHtml(a.experience)}</td>
-        <td class="hide-tablet">${escapeHtml(a.monthlyInvestment)}</td>
-        <td><span class="status-badge ${statusClass(a.status)}">${escapeHtml(a.status)}</span></td>
-        <td>
-          <div class="action-btns">
-            <button class="btn btn-sm btn-blue" onclick="CBAdmin.viewApplication('${a.id}')">View</button>
-            ${a.status === 'Pending' ? `
-              <button class="btn btn-sm btn-green" onclick="CBAdmin.updateAppStatus('${a.id}', 'Approved')">Approve</button>
-              <button class="btn btn-sm btn-red" onclick="CBAdmin.updateAppStatus('${a.id}', 'Denied')">Deny</button>
-            ` : ''}
-          </div>
-        </td>
-      </tr>
-    `).join('');
-  }
-
-  function viewApplication(id) {
-    const apps = getData(STORAGE_KEYS.applications);
-    const app = apps.find(a => a.id === id);
-    if (!app) return;
-
-    dom.modalTitle.textContent = `Application — ${app.firstName} ${app.lastName}`;
-    dom.modalBody.innerHTML = `
-      <div class="detail-grid">
-        <div class="detail-item">
-          <span class="detail-label">Application ID</span>
-          <span class="detail-value">${escapeHtml(app.id)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Date Submitted</span>
-          <span class="detail-value">${formatDate(app.date)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Full Name</span>
-          <span class="detail-value">${escapeHtml(app.firstName)} ${escapeHtml(app.lastName)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Company</span>
-          <span class="detail-value">${escapeHtml(app.company)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Email</span>
-          <span class="detail-value">${escapeHtml(app.email)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Phone</span>
-          <span class="detail-value">${escapeHtml(app.phone)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Business Type</span>
-          <span class="detail-value">${escapeHtml(app.businessType)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Experience</span>
-          <span class="detail-value">${escapeHtml(app.experience)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Monthly Investment</span>
-          <span class="detail-value">${escapeHtml(app.monthlyInvestment)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">License Number</span>
-          <span class="detail-value">${escapeHtml(app.licenseNumber)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Service Area</span>
-          <span class="detail-value">${escapeHtml(app.serviceArea)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Status</span>
-          <span class="detail-value"><span class="status-badge ${statusClass(app.status)}">${escapeHtml(app.status)}</span></span>
-        </div>
-        <div class="detail-item full-width">
-          <span class="detail-label">Description</span>
-          <span class="detail-value">${escapeHtml(app.description)}</span>
-        </div>
-      </div>
-    `;
-
-    dom.modalFooter.innerHTML = app.status === 'Pending'
-      ? `<button class="btn btn-red" onclick="CBAdmin.updateAppStatus('${app.id}', 'Denied'); CBAdmin.closeModal();">Deny</button>
-         <button class="btn btn-green" onclick="CBAdmin.updateAppStatus('${app.id}', 'Approved'); CBAdmin.closeModal();">Approve</button>`
-      : `<button class="btn btn-outline" onclick="CBAdmin.closeModal();">Close</button>`;
-
-    openModal();
-  }
-
-  function updateAppStatus(id, status) {
-    const apps = getData(STORAGE_KEYS.applications);
-    const idx = apps.findIndex(a => a.id === id);
-    if (idx === -1) return;
-    apps[idx].status = status;
-    setData(STORAGE_KEYS.applications, apps);
-
-    if (status === 'Approved') {
-      const app = apps[idx];
-      const members = getData(STORAGE_KEYS.members);
-      // Check if already a member to prevent duplicates
-      if (!members.some(m => m.email === app.email)) {
-        const newMember = {
-          id: 'MEM-' + String(members.length + 1).padStart(3, '0'),
-          memberSince: new Date().toISOString().split('T')[0],
-          firstName: app.firstName,
-          lastName: app.lastName,
-          company: app.company,
-          email: app.email,
-          phone: app.phone,
-          tier: 'Founding Member',
-          status: 'Active'
-        };
-        members.push(newMember);
-        setData(STORAGE_KEYS.members, members);
-      }
-    }
-
-    renderApplications();
-    showToast(`Application ${status.toLowerCase()} successfully`, status === 'Approved' ? 'success' : 'error');
-  }
-
-
-  // ═══════════════════════════════════════════════════════
-  // MEMBERS
-  // ═══════════════════════════════════════════════════════
+  // ── Members List ──
   function getFilteredMembers() {
-    let members = getData(STORAGE_KEYS.members);
+    let list = getDatabase(STORAGE_KEYS.members);
     const search = (dom.memberSearch.value || '').toLowerCase().trim();
+    const status = dom.memberStatusFilter.value;
 
     if (search) {
-      members = members.filter(m =>
+      list = list.filter(m => 
         `${m.firstName} ${m.lastName}`.toLowerCase().includes(search) ||
         (m.company || '').toLowerCase().includes(search) ||
         (m.email || '').toLowerCase().includes(search)
       );
     }
 
-    return members.sort((a, b) => new Date(b.memberSince) - new Date(a.memberSince));
+    if (status !== 'all') {
+      list = list.filter(m => m.status === status);
+    }
+
+    return list.sort((a,b) => new Date(b.memberSince) - new Date(a.memberSince));
   }
 
   function renderMembers() {
-    const members = getFilteredMembers();
+    const list = getFilteredMembers();
 
-    if (members.length === 0) {
+    if (list.length === 0) {
       dom.membersTable.innerHTML = '';
       dom.memberEmptyState.style.display = 'block';
       return;
     }
 
     dom.memberEmptyState.style.display = 'none';
-    dom.membersTable.innerHTML = members.map(m => `
+    dom.membersTable.innerHTML = list.map(m => `
       <tr>
         <td>${formatDate(m.memberSince)}</td>
-        <td>${escapeHtml(m.firstName)} ${escapeHtml(m.lastName)}</td>
+        <td><strong>${escapeHtml(m.firstName)} ${escapeHtml(m.lastName)}</strong></td>
         <td>${escapeHtml(m.company)}</td>
         <td>${escapeHtml(m.email)}</td>
         <td class="hide-mobile">${escapeHtml(m.phone)}</td>
+        <td>${escapeHtml(m.city)}, ${escapeHtml(m.state)}</td>
         <td><span class="status-badge ${statusClass(m.status)}">${escapeHtml(m.status)}</span></td>
         <td>
-          <div class="action-btns">
-            <button class="btn btn-sm btn-blue" onclick="CBAdmin.viewMember('${m.id}')">View</button>
-            ${m.status === 'Active' ? `
-              <button class="btn btn-sm btn-red" onclick="CBAdmin.updateMemberStatus('${m.id}', 'Suspended')">Suspend</button>
-            ` : ''}
-            ${m.status === 'Suspended' ? `
-              <button class="btn btn-sm btn-green" onclick="CBAdmin.updateMemberStatus('${m.id}', 'Active')">Activate</button>
-              <button class="btn btn-sm btn-red" onclick="CBAdmin.updateMemberStatus('${m.id}', 'Cancelled')">Cancel</button>
-            ` : ''}
-            ${m.status === 'Active' ? `
-              <button class="btn btn-sm btn-outline" onclick="CBAdmin.updateMemberStatus('${m.id}', 'Cancelled')">Cancel</button>
-            ` : ''}
-          </div>
+          <button class="btn btn-sm btn-blue" onclick="CBAdmin.viewMember('${m.id}')">Manage</button>
         </td>
       </tr>
     `).join('');
   }
 
-  function viewMember(id) {
-    const members = getData(STORAGE_KEYS.members);
-    const m = members.find(x => x.id === id);
-    if (!m) return;
-
-    dom.modalTitle.textContent = `Member — ${m.firstName} ${m.lastName}`;
-    dom.modalBody.innerHTML = `
-      <div class="detail-grid">
-        <div class="detail-item">
-          <span class="detail-label">Member ID</span>
-          <span class="detail-value">${escapeHtml(m.id)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Member Since</span>
-          <span class="detail-value">${formatDate(m.memberSince)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Full Name</span>
-          <span class="detail-value">${escapeHtml(m.firstName)} ${escapeHtml(m.lastName)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Company</span>
-          <span class="detail-value">${escapeHtml(m.company)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Email</span>
-          <span class="detail-value">${escapeHtml(m.email)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Phone</span>
-          <span class="detail-value">${escapeHtml(m.phone)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Tier</span>
-          <span class="detail-value">${escapeHtml(m.tier)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Status</span>
-          <span class="detail-value"><span class="status-badge ${statusClass(m.status)}">${escapeHtml(m.status)}</span></span>
-        </div>
-      </div>
-    `;
-
-    let footerBtns = '<button class="btn btn-outline" onclick="CBAdmin.closeModal();">Close</button>';
-    if (m.status === 'Active') {
-      footerBtns = `<button class="btn btn-red" onclick="CBAdmin.updateMemberStatus('${m.id}', 'Suspended'); CBAdmin.closeModal();">Suspend</button>` + footerBtns;
-    } else if (m.status === 'Suspended') {
-      footerBtns = `<button class="btn btn-green" onclick="CBAdmin.updateMemberStatus('${m.id}', 'Active'); CBAdmin.closeModal();">Reactivate</button>` + footerBtns;
-    }
-    dom.modalFooter.innerHTML = footerBtns;
-
-    openModal();
-  }
-
-  function updateMemberStatus(id, status) {
-    const members = getData(STORAGE_KEYS.members);
-    const idx = members.findIndex(m => m.id === id);
-    if (idx === -1) return;
-    members[idx].status = status;
-    setData(STORAGE_KEYS.members, members);
-    renderMembers();
-    const colorMap = { Active: 'success', Suspended: 'error', Cancelled: 'error' };
-    showToast(`Member ${status.toLowerCase()} successfully`, colorMap[status] || 'info');
-  }
-
-  // ═══════════════════════════════════════════════════════
-  // QUOTES
-  // ═══════════════════════════════════════════════════════
+  // ── Quote Requests (Catalog template builds) ──
   function getFilteredQuotes() {
-    let quotes = getData(STORAGE_KEYS.quotes);
+    let list = getDatabase(STORAGE_KEYS.quotes).filter(q => !q.isCustom);
     const search = (dom.quoteSearch.value || '').toLowerCase().trim();
-    const type = dom.quoteTypeFilter.value;
+    const status = dom.quoteStatusFilter.value;
 
     if (search) {
-      quotes = quotes.filter(q =>
-        `${q.firstName} ${q.lastName}`.toLowerCase().includes(search) ||
-        (q.company || '').toLowerCase().includes(search) ||
-        (q.email || '').toLowerCase().includes(search)
+      list = list.filter(q =>
+        (q.companyName || '').toLowerCase().includes(search) ||
+        (q.designName || '').toLowerCase().includes(search) ||
+        `${q.firstName} ${q.lastName}`.toLowerCase().includes(search)
       );
     }
 
-    if (type !== 'all') {
-      quotes = quotes.filter(q => q.projectType === type);
+    if (status !== 'all') {
+      list = list.filter(q => q.status === status);
     }
 
-    return quotes.sort((a, b) => new Date(b.date) - new Date(a.date));
+    return list.sort((a,b) => new Date(b.date) - new Date(a.date));
   }
 
   function renderQuotes() {
-    const quotes = getFilteredQuotes();
+    const list = getFilteredQuotes();
 
-    if (quotes.length === 0) {
+    if (list.length === 0) {
       dom.quotesTable.innerHTML = '';
       dom.quoteEmptyState.style.display = 'block';
       return;
     }
 
     dom.quoteEmptyState.style.display = 'none';
-    dom.quotesTable.innerHTML = quotes.map(q => `
+    dom.quotesTable.innerHTML = list.map(q => `
       <tr>
         <td>${formatDate(q.date)}</td>
-        <td>${escapeHtml(q.firstName)} ${escapeHtml(q.lastName)}</td>
-        <td>${escapeHtml(q.company)}</td>
-        <td>${escapeHtml(q.email)}</td>
-        <td class="hide-mobile">${escapeHtml(q.phone)}</td>
+        <td><strong>${escapeHtml(q.companyName)}</strong></td>
+        <td>${escapeHtml(q.designName)}</td>
         <td>${escapeHtml(q.projectType)}</td>
-        <td class="hide-tablet">${escapeHtml(q.budget)}</td>
-        <td class="hide-tablet">${escapeHtml(q.timeline)}</td>
+        <td>${escapeHtml(q.budget)}</td>
+        <td>${escapeHtml(q.timeline)}</td>
         <td><span class="status-badge ${statusClass(q.status)}">${escapeHtml(q.status)}</span></td>
         <td>
-          <div class="action-btns">
-            <button class="btn btn-sm btn-blue" onclick="CBAdmin.viewQuote('${q.id}')">View</button>
-            ${q.status === 'New' ? `<button class="btn btn-sm btn-outline" onclick="CBAdmin.updateQuoteStatus('${q.id}', 'Reviewed')">Mark Reviewed</button>` : ''}
-            ${q.status === 'Reviewed' ? `<button class="btn btn-sm btn-green" onclick="CBAdmin.updateQuoteStatus('${q.id}', 'Quoted')">Mark Quoted</button>` : ''}
-            ${q.status === 'Quoted' ? `<button class="btn btn-sm btn-outline" onclick="CBAdmin.updateQuoteStatus('${q.id}', 'Closed')">Close</button>` : ''}
-          </div>
+          <button class="btn btn-sm btn-blue" onclick="CBAdmin.viewQuote('${q.id}')">Verify</button>
         </td>
       </tr>
     `).join('');
   }
 
-  function viewQuote(id) {
-    const quotes = getData(STORAGE_KEYS.quotes);
-    const q = quotes.find(x => x.id === id);
-    if (!q) return;
+  // ── Custom Sourcing Builds ──
+  function getFilteredCustom() {
+    let list = getDatabase(STORAGE_KEYS.quotes).filter(q => q.isCustom);
+    const search = (dom.customSearch.value || '').toLowerCase().trim();
+    const status = dom.customStatusFilter.value;
 
-    dom.modalTitle.textContent = `Quote — ${q.firstName} ${q.lastName}`;
+    if (search) {
+      list = list.filter(c =>
+        (c.companyName || '').toLowerCase().includes(search) ||
+        (c.designName || '').toLowerCase().includes(search) ||
+        (c.projectType || '').toLowerCase().includes(search)
+      );
+    }
+
+    if (status !== 'all') {
+      list = list.filter(c => c.status === status);
+    }
+
+    return list.sort((a,b) => new Date(b.date) - new Date(a.date));
+  }
+
+  function renderCustomBuilds() {
+    const list = getFilteredCustom();
+
+    if (list.length === 0) {
+      dom.customBuildsTable.innerHTML = '';
+      dom.customEmptyState.style.display = 'block';
+      return;
+    }
+
+    dom.customEmptyState.style.display = 'none';
+    dom.customBuildsTable.innerHTML = list.map(c => {
+      const filesCount = c.files ? c.files.length : 0;
+      return `
+        <tr>
+          <td>${formatDate(c.date)}</td>
+          <td><strong>${escapeHtml(c.companyName)}</strong></td>
+          <td>${escapeHtml(c.designName.replace('Custom: ', ''))}</td>
+          <td>${escapeHtml(c.projectType)}</td>
+          <td>
+            <span class="attachments-tag">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+              ${filesCount} File(s)
+            </span>
+          </td>
+          <td>${escapeHtml(c.budget)}</td>
+          <td><span class="status-badge ${statusClass(c.status)}">${escapeHtml(c.status)}</span></td>
+          <td>
+            <button class="btn btn-sm btn-blue" onclick="CBAdmin.viewQuote('${c.id}')">Details</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // ACTIONS / MODALS
+  // ═══════════════════════════════════════════════════════
+
+  // ── Member Detail Modal ──
+  function viewMember(id) {
+    const members = getDatabase(STORAGE_KEYS.members);
+    const quotes = getDatabase(STORAGE_KEYS.quotes);
+    
+    const user = members.find(m => m.id === id);
+    if (!user) return;
+
+    // Fetch quotes submitted by this member
+    const userQuotes = quotes.filter(q => q.memberId === user.id);
+
+    dom.modalTitle.textContent = `Member Profile — ${user.firstName} ${user.lastName}`;
+    
+    // Build Quotes Table HTML
+    const quotesHtml = userQuotes.length 
+      ? `<table class="modal-sub-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Scope / Design</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${userQuotes.map(q => `
+              <tr>
+                <td><small>${q.id}</small></td>
+                <td><small>${q.date}</small></td>
+                <td><small>${escapeHtml(q.designName)}</small></td>
+                <td><span class="status-badge ${statusClass(q.status)}" style="font-size:0.6rem; padding:2px 8px;">${q.status}</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+         </table>`
+      : '<p style="font-size:0.85rem; color:var(--text-muted);">No quote requests logged.</p>';
+
     dom.modalBody.innerHTML = `
       <div class="detail-grid">
         <div class="detail-item">
-          <span class="detail-label">Quote ID</span>
-          <span class="detail-value">${escapeHtml(q.id)}</span>
+          <span class="detail-label">Member ID</span>
+          <span class="detail-value">${user.id}</span>
         </div>
         <div class="detail-item">
-          <span class="detail-label">Date Submitted</span>
-          <span class="detail-value">${formatDate(q.date)}</span>
+          <span class="detail-label">Joined Date</span>
+          <span class="detail-value">${formatDate(user.memberSince)}</span>
         </div>
         <div class="detail-item">
-          <span class="detail-label">Full Name</span>
-          <span class="detail-value">${escapeHtml(q.firstName)} ${escapeHtml(q.lastName)}</span>
+          <span class="detail-label">Company Name</span>
+          <span class="detail-value">${escapeHtml(user.company)}</span>
         </div>
         <div class="detail-item">
-          <span class="detail-label">Company</span>
-          <span class="detail-value">${escapeHtml(q.company)}</span>
+          <span class="detail-label">Email Sourcing Address</span>
+          <span class="detail-value">${escapeHtml(user.email)}</span>
         </div>
         <div class="detail-item">
-          <span class="detail-label">Email</span>
-          <span class="detail-value">${escapeHtml(q.email)}</span>
+          <span class="detail-label">Direct Phone</span>
+          <span class="detail-value">${escapeHtml(user.phone)}</span>
         </div>
         <div class="detail-item">
-          <span class="detail-label">Phone</span>
-          <span class="detail-value">${escapeHtml(q.phone)}</span>
+          <span class="detail-label">Sourcing Location</span>
+          <span class="detail-value">${escapeHtml(user.city || 'N/A')}, ${escapeHtml(user.state || 'N/A')}</span>
         </div>
         <div class="detail-item">
-          <span class="detail-label">Project Type</span>
-          <span class="detail-value">${escapeHtml(q.projectType)}</span>
+          <span class="detail-label">Company Sourcing Profile</span>
+          <span class="detail-value">${escapeHtml(user.tier || 'Founding Contractor')}</span>
         </div>
         <div class="detail-item">
-          <span class="detail-label">Budget</span>
-          <span class="detail-value">${escapeHtml(q.budget)}</span>
+          <span class="detail-label">Verification Status</span>
+          <select id="modal-member-status" class="modal-select">
+            <option value="Pending" ${user.status === 'Pending' ? 'selected' : ''}>Pending Verification</option>
+            <option value="Active" ${user.status === 'Active' ? 'selected' : ''}>Active Member</option>
+            <option value="Expired" ${user.status === 'Expired' ? 'selected' : ''}>Expired Account</option>
+            <option value="Cancelled" ${user.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+          </select>
         </div>
-        <div class="detail-item">
-          <span class="detail-label">Timeline</span>
-          <span class="detail-value">${escapeHtml(q.timeline)}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Status</span>
-          <span class="detail-value"><span class="status-badge ${statusClass(q.status)}">${escapeHtml(q.status)}</span></span>
-        </div>
+        
         <div class="detail-item full-width">
-          <span class="detail-label">Project Description</span>
-          <span class="detail-value">${escapeHtml(q.description)}</span>
+          <span class="detail-label">Procurement &amp; Direct Factory Notes</span>
+          <textarea id="modal-member-notes" class="modal-textarea" rows="4" placeholder="Enter custom logs, developer license checks, credit status...">${escapeHtml(user.notes || '')}</textarea>
+        </div>
+
+        <div class="detail-item full-width" style="margin-top:16px;">
+          <span class="detail-label" style="border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:8px; margin-bottom:12px;">Sourcing Requests History (${userQuotes.length})</span>
+          ${quotesHtml}
         </div>
       </div>
     `;
 
-    let footerHtml = '<button class="btn btn-outline" onclick="CBAdmin.closeModal();">Close</button>';
-    if (q.status === 'New') {
-      footerHtml = `<button class="btn btn-gold" onclick="CBAdmin.updateQuoteStatus('${q.id}', 'Reviewed'); CBAdmin.closeModal();">Mark as Reviewed</button>` + footerHtml;
-    } else if (q.status === 'Reviewed') {
-      footerHtml = `<button class="btn btn-green" onclick="CBAdmin.updateQuoteStatus('${q.id}', 'Quoted'); CBAdmin.closeModal();">Mark as Quoted</button>` + footerHtml;
-    } else if (q.status === 'Quoted') {
-      footerHtml = `<button class="btn btn-outline" onclick="CBAdmin.updateQuoteStatus('${q.id}', 'Closed'); CBAdmin.closeModal();">Close Quote</button>` + footerHtml;
-    }
-    dom.modalFooter.innerHTML = footerHtml;
+    dom.modalFooter.innerHTML = `
+      <button class="btn btn-outline" onclick="CBAdmin.closeModal()">Close</button>
+      <button class="btn btn-gold" onclick="CBAdmin.saveMemberChanges('${user.id}')">Save Changes</button>
+    `;
 
     openModal();
   }
 
-  function updateQuoteStatus(id, status) {
-    const quotes = getData(STORAGE_KEYS.quotes);
-    const idx = quotes.findIndex(q => q.id === id);
+  function saveMemberChanges(id) {
+    const members = getDatabase(STORAGE_KEYS.members);
+    const idx = members.findIndex(m => m.id === id);
     if (idx === -1) return;
-    quotes[idx].status = status;
-    setData(STORAGE_KEYS.quotes, quotes);
-    renderQuotes();
-    showToast(`Quote marked as ${status.toLowerCase()}`, 'success');
+
+    const newStatus = $('#modal-member-status').value;
+    const newNotes = $('#modal-member-notes').value.trim();
+
+    members[idx].status = newStatus;
+    members[idx].notes = newNotes;
+    
+    setDatabase(STORAGE_KEYS.members, members);
+    renderMembers();
+    closeModal();
+    showToast('Member profile and logs updated successfully.', 'success');
   }
 
-  // ═══════════════════════════════════════════════════════
-  // MODAL
-  // ═══════════════════════════════════════════════════════
+  // ── Quote / Custom Build Detail Modal ──
+  function viewQuote(id) {
+    const quotes = getDatabase(STORAGE_KEYS.quotes);
+    const q = quotes.find(x => x.id === id);
+    if (!q) return;
+
+    dom.modalTitle.textContent = `${q.isCustom ? 'Custom Build' : 'Catalog Quote'} — ${q.id}`;
+    
+    // Render file attachments links
+    const filesHtml = q.files && q.files.length 
+      ? `<div class="attachments-list">
+          ${q.files.map(file => `
+            <a href="#" class="attachment-file-link" onclick="event.preventDefault(); alert('Downloading Sourcing File: ${file}');">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+              ${escapeHtml(file)}
+            </a>
+          `).join('')}
+         </div>`
+      : '<span style="color:var(--text-muted); font-size:0.85rem;">No sketch attachments.</span>';
+
+    dom.modalBody.innerHTML = `
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Project ID</span>
+          <span class="detail-value">${q.id}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Submission Date</span>
+          <span class="detail-value">${formatDate(q.date)}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Contractor Company</span>
+          <span class="detail-value">${escapeHtml(q.companyName)}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Contact Representative</span>
+          <span class="detail-value">${escapeHtml(q.memberName || (q.firstName + ' ' + q.lastName))}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Design Line / Template</span>
+          <span class="detail-value" style="color:var(--gold); font-weight:600;">${escapeHtml(q.designName)}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Sourcing Category</span>
+          <span class="detail-value">${escapeHtml(q.projectType)}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Budget Range</span>
+          <span class="detail-value">${escapeHtml(q.budget)}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Lead Window</span>
+          <span class="detail-value">${escapeHtml(q.timeline)}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Procurement Status</span>
+          <select id="modal-quote-status" class="modal-select">
+            <option value="New" ${q.status === 'New' ? 'selected' : ''}>New Request</option>
+            <option value="Reviewing" ${q.status === 'Reviewing' ? 'selected' : ''}>Reviewing Specs</option>
+            <option value="Sent to manufacturer" ${q.status === 'Sent to manufacturer' ? 'selected' : ''}>Sent to Factory</option>
+            <option value="Waiting for manufacturer" ${q.status === 'Waiting for manufacturer' ? 'selected' : ''}>Factory Estimating</option>
+            <option value="Quote ready" ${q.status === 'Quote ready' ? 'selected' : ''}>Pricing Ready</option>
+            <option value="Sent to client" ${q.status === 'Sent to client' ? 'selected' : ''}>Sent to Contractor</option>
+            <option value="Accepted" ${q.status === 'Accepted' ? 'selected' : ''}>Accepted (Production)</option>
+            <option value="Rejected" ${q.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+            <option value="Completed" ${q.status === 'Completed' ? 'selected' : ''}>Order Sourced &amp; Delivered</option>
+          </select>
+        </div>
+        
+        <div class="detail-item full-width">
+          <span class="detail-label">Preferred Sourcing Materials</span>
+          <span class="detail-value">${escapeHtml(q.preferredMaterials || 'Standard Collection Specs')}</span>
+        </div>
+
+        <div class="detail-item full-width">
+          <span class="detail-label">Dimensions / Sourcing Details</span>
+          <div class="modal-text-panel">${escapeHtml(q.description)}</div>
+        </div>
+
+        <div class="detail-item full-width">
+          <span class="detail-label">Elevations &amp; Sourcing Plans Attachments</span>
+          ${filesHtml}
+        </div>
+
+        <div class="detail-item full-width">
+          <span class="detail-label">Procurement Logs &amp; Manufacturer Updates</span>
+          <textarea id="modal-quote-notes" class="modal-textarea" rows="4" placeholder="Enter correspondence updates, shipping tracker IDs, direct factory pricing breakdowns...">${escapeHtml(q.adminNotes || '')}</textarea>
+        </div>
+      </div>
+    `;
+
+    dom.modalFooter.innerHTML = `
+      <button class="btn btn-outline" onclick="CBAdmin.closeModal()">Close</button>
+      <button class="btn btn-gold" onclick="CBAdmin.saveQuoteChanges('${q.id}')">Save Changes</button>
+    `;
+
+    openModal();
+  }
+
+  function saveQuoteChanges(id) {
+    const quotes = getDatabase(STORAGE_KEYS.quotes);
+    const idx = quotes.findIndex(q => q.id === id);
+    if (idx === -1) return;
+
+    const newStatus = $('#modal-quote-status').value;
+    const newNotes = $('#modal-quote-notes').value.trim();
+
+    quotes[idx].status = newStatus;
+    quotes[idx].adminNotes = newNotes;
+
+    setDatabase(STORAGE_KEYS.quotes, quotes);
+    
+    // Refresh active section
+    if (quotes[idx].isCustom) {
+      renderCustomBuilds();
+    } else {
+      renderQuotes();
+    }
+    
+    closeModal();
+    showToast(`Sourcing order ${id} status updated successfully.`, 'success');
+  }
+
+  // ── Modals Display toggles ──
   function openModal() {
     dom.detailModal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -939,11 +787,8 @@
     document.body.style.overflow = '';
   }
 
-  // ═══════════════════════════════════════════════════════
-  // TOAST NOTIFICATION
-  // ═══════════════════════════════════════════════════════
+  // ── Toast Notification ──
   let toastTimer = null;
-
   function showToast(message, type = 'info') {
     dom.toast.textContent = message;
     dom.toast.className = `toast ${type}`;
@@ -952,11 +797,11 @@
     if (toastTimer) clearTimeout(toastTimer);
     toastTimer = setTimeout(() => {
       dom.toast.style.display = 'none';
-    }, 3000);
+    }, 3500);
   }
 
   // ═══════════════════════════════════════════════════════
-  // CSV EXPORT
+  // CSV EXPORTS LOGIC
   // ═══════════════════════════════════════════════════════
   function escapeCsv(val) {
     if (val == null) return '';
@@ -982,113 +827,50 @@
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    showToast(`Exported ${rows.length} records to ${filename}`, 'success');
-  }
-
-  function exportApplications() {
-    const apps = getFilteredApplications();
-    const headers = ['Date', 'First Name', 'Last Name', 'Company', 'Email', 'Phone', 'Business Type', 'Experience', 'Monthly Investment', 'License', 'Service Area', 'Status'];
-    const rows = apps.map(a => [
-      a.date, a.firstName, a.lastName, a.company, a.email, a.phone,
-      a.businessType, a.experience, a.monthlyInvestment, a.licenseNumber, a.serviceArea, a.status
-    ]);
-    downloadCsv('cbkitchen-applications.csv', headers, rows);
+    showToast(`Exported ${rows.length} records successfully.`, 'success');
   }
 
   function exportMembers() {
-    const members = getFilteredMembers();
-    const headers = ['Member Since', 'First Name', 'Last Name', 'Company', 'Email', 'Phone', 'Tier', 'Status'];
-    const rows = members.map(m => [
-      m.memberSince, m.firstName, m.lastName, m.company, m.email, m.phone, m.tier, m.status
+    const list = getFilteredMembers();
+    const headers = ['Joined Date', 'ID', 'First Name', 'Last Name', 'Company', 'Email', 'Phone', 'City', 'State', 'Profile Tier', 'Status', 'Sourcing Notes'];
+    const rows = list.map(m => [
+      m.memberSince, m.id, m.firstName, m.lastName, m.company, m.email, m.phone, m.city, m.state, m.tier, m.status, m.notes
     ]);
-    downloadCsv('cbkitchen-members.csv', headers, rows);
+    downloadCsv('cbkitchen-members-sourcing.csv', headers, rows);
   }
 
   function exportQuotes() {
-    const quotes = getFilteredQuotes();
-    const headers = ['Date', 'First Name', 'Last Name', 'Company', 'Email', 'Phone', 'Project Type', 'Budget', 'Timeline', 'Status'];
-    const rows = quotes.map(q => [
-      q.date, q.firstName, q.lastName, q.company, q.email, q.phone,
-      q.projectType, q.budget, q.timeline, q.status
+    const list = getFilteredQuotes();
+    const headers = ['Date', 'Quote ID', 'Company', 'Contact Name', 'Design Spec', 'Scope Category', 'Budget Goal', 'Timeline Required', 'Sourcing Details', 'Materials Preferred', 'Status', 'Procurement Log'];
+    const rows = list.map(q => [
+      q.date, q.id, q.companyName, q.memberName, q.designName, q.projectType, q.budget, q.timeline, q.description, q.preferredMaterials, q.status, q.adminNotes
     ]);
-    downloadCsv('cbkitchen-quotes.csv', headers, rows);
+    downloadCsv('cbkitchen-catalog-sourcing.csv', headers, rows);
   }
 
-  // ═══════════════════════════════════════════════════════
-  // EVENT BINDINGS
-  // ═══════════════════════════════════════════════════════
-  function initEvents() {
-    // Login form
-    dom.loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const user = dom.loginUsername.value.trim();
-      const pass = dom.loginPassword.value;
+  function exportCustomBuilds() {
+    const list = getFilteredCustom();
+    const headers = ['Date', 'Custom ID', 'Company', 'Contact Name', 'Project Name', 'Sourcing Scope', 'Sketch Count', 'Budget Goal', 'Timeline Required', 'Scope Details', 'Materials Preferred', 'Status', 'Procurement Log'];
+    const rows = list.map(c => [
+      c.date, c.id, c.companyName, c.memberName, c.designName.replace('Custom: ', ''), c.projectType, c.files ? c.files.length : 0, c.budget, c.timeline, c.description, c.preferredMaterials, c.status, c.adminNotes
+    ]);
+    downloadCsv('cbkitchen-custom-sourcing.csv', headers, rows);
+  }
 
-      if (login(user, pass)) {
-        showDashboard();
-      } else {
-        dom.loginError.style.display = 'flex';
-        dom.loginPassword.value = '';
-        dom.loginPassword.focus();
-      }
-    });
-
-    // Logout
-    dom.logoutBtn.addEventListener('click', logout);
-
-    // Sidebar navigation
-    $$('.nav-item[data-page]').forEach(item => {
-      item.addEventListener('click', (e) => {
-        e.preventDefault();
-        navigateTo(item.dataset.page);
-      });
-    });
-
-    // Dashboard "View All" links
-    $$('.card-link[data-goto]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        navigateTo(link.dataset.goto);
-      });
-    });
-
-    // Mobile hamburger
-    dom.hamburgerBtn.addEventListener('click', () => {
-      const isOpen = dom.sidebar.classList.toggle('open');
-      dom.sidebarOverlay.classList.toggle('active', isOpen);
-      dom.hamburgerBtn.classList.toggle('active', isOpen);
-    });
-
-    dom.sidebarOverlay.addEventListener('click', closeMobileSidebar);
-
-    // Application search & filter
-    dom.appSearch.addEventListener('input', debounce(renderApplications, 250));
-    dom.appStatusFilter.addEventListener('change', renderApplications);
-
-    // Member search
-    dom.memberSearch.addEventListener('input', debounce(renderMembers, 250));
-
-    // Quote search & filter
-    dom.quoteSearch.addEventListener('input', debounce(renderQuotes, 250));
-    dom.quoteTypeFilter.addEventListener('change', renderQuotes);
-
-    // Export buttons
-    dom.exportApplicationsBtn.addEventListener('click', exportApplications);
-    dom.exportMembersBtn.addEventListener('click', exportMembers);
-    dom.exportQuotesBtn.addEventListener('click', exportQuotes);
-
-    // Modal close
-    dom.modalCloseBtn.addEventListener('click', closeModal);
-    dom.detailModal.addEventListener('click', (e) => {
-      if (e.target === dom.detailModal) closeModal();
-    });
-
-    // Escape key closes modal
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        if (dom.detailModal.style.display !== 'none') closeModal();
-      }
-    });
+  // ── Counter animation ──
+  function animateCounter(el, target) {
+    if (!el) return;
+    const current = parseInt(el.textContent) || 0;
+    if (current === target) { el.textContent = target; return; }
+    const duration = 500;
+    const start = performance.now();
+    function step(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(current + (target - current) * eased);
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
 
   function debounce(fn, delay) {
@@ -1099,32 +881,108 @@
     };
   }
 
-  // ═══════════════════════════════════════════════════════
-  // INITIALIZATION
-  // ═══════════════════════════════════════════════════════
-  function init() {
-    seedData();
-    initEvents();
-
-    if (isLoggedIn()) {
-      showDashboard();
-    } else {
-      showLogin();
+  function formatDate(dateStr) {
+    if (!dateStr) return '—';
+    try {
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch {
+      return dateStr;
     }
   }
 
-  // Expose public API for inline onclick handlers
+  function statusClass(status) {
+    return status.toLowerCase().replace(/\s+/g, '-');
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // EVENT INITS
+  // ═══════════════════════════════════════════════════════
+  function initEvents() {
+    dom.loginForm.addEventListener('submit', handleLogin);
+    dom.logoutBtn.addEventListener('click', handleLogout);
+
+    // Sidebar page routing
+    $$('.nav-item[data-page]').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateTo(item.dataset.page);
+      });
+    });
+
+    // Dashboard links
+    $$('.card-link[data-goto]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateTo(link.dataset.goto);
+      });
+    });
+
+    // Mobile sidebar toggle
+    dom.hamburgerBtn.addEventListener('click', () => {
+      const isOpen = dom.sidebar.classList.toggle('open');
+      dom.sidebarOverlay.classList.toggle('active', isOpen);
+      dom.hamburgerBtn.classList.toggle('active', isOpen);
+    });
+
+    dom.sidebarOverlay.addEventListener('click', () => {
+      dom.sidebar.classList.remove('open');
+      dom.sidebarOverlay.classList.remove('active');
+      dom.hamburgerBtn.classList.remove('active');
+    });
+
+    // Members search & filter
+    dom.memberSearch.addEventListener('input', debounce(renderMembers, 200));
+    dom.memberStatusFilter.addEventListener('change', renderMembers);
+
+    // Quotes search & filter
+    dom.quoteSearch.addEventListener('input', debounce(renderQuotes, 200));
+    dom.quoteStatusFilter.addEventListener('change', renderQuotes);
+
+    // Custom Sourcing search & filter
+    dom.customSearch.addEventListener('input', debounce(renderCustomBuilds, 200));
+    dom.customStatusFilter.addEventListener('change', renderCustomBuilds);
+
+    // Exports
+    dom.exportMembersBtn.addEventListener('click', exportMembers);
+    dom.exportQuotesBtn.addEventListener('click', exportQuotes);
+    dom.exportCustomBtn.addEventListener('click', exportCustomBuilds);
+
+    // Modals Close handlers
+    dom.modalCloseBtn.addEventListener('click', closeModal);
+    dom.detailModal.addEventListener('click', (e) => {
+      if (e.target === dom.detailModal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && dom.detailModal.style.display !== 'none') closeModal();
+    });
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // BOOT ADMINPANEL
+  // ═══════════════════════════════════════════════════════
+  function init() {
+    cacheDom();
+    seedInitialData();
+    initEvents();
+
+    if (isLoggedIn()) {
+      showDashboardView();
+    } else {
+      showLoginScreen();
+    }
+  }
+
+  // Expose API for inline onclick event triggers in HTML
   window.CBAdmin = {
-    viewApplication,
-    updateAppStatus: updateAppStatus,
     viewMember,
-    updateMemberStatus,
+    saveMemberChanges,
     viewQuote,
-    updateQuoteStatus,
+    saveQuoteChanges,
     closeModal
   };
 
-  // Boot
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {

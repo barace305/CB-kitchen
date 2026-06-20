@@ -3,9 +3,6 @@
    Premium dark luxury design system with gold and brass accents
    ============================================================ */
 
-/* Try to import shared variables; fallback defined below */
-@import url('../../css/variables.css');
-
 /* ── Fonts ─────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
@@ -61,7 +58,7 @@ body {
   position: fixed;
   inset: 0;
   background-image: 
-    linear-gradient(rgba(5, 5, 5, 0.88), rgba(5, 5, 5, 0.95)),
+    linear-gradient(rgba(5, 5, 5, 0.85), rgba(5, 5, 5, 0.95)),
     url('../../assets/images/hero-kitchen.png');
   background-size: cover;
   background-position: center;
@@ -117,9 +114,15 @@ body {
   transform: translateX(-4px);
 }
 
+.back-home:hover .arrow-icon {
+  stroke: var(--gold);
+}
+
 .arrow-icon {
   width: 16px;
   height: 16px;
+  stroke: var(--text-secondary);
+  transition: stroke var(--transition);
 }
 
 /* ── Auth Gate Main ────────────────────────────────────────── */
@@ -170,6 +173,7 @@ body {
   height: auto;
   margin: 0 auto 16px;
   filter: brightness(1.15);
+  display: block;
 }
 
 .login-title {
@@ -180,6 +184,7 @@ body {
   margin-bottom: 12px;
   letter-spacing: 0.5px;
   line-height: 1.35;
+  text-align: center;
 }
 
 .login-subtitle {
@@ -189,6 +194,7 @@ body {
   line-height: 1.5;
   max-width: 380px;
   margin: 0 auto;
+  text-align: center;
 }
 
 /* ── Forms & Inputs ── */
