@@ -11,11 +11,16 @@
     members: 'cbk_members',        // Database of all members
   };
 
+  const MEMBER_CREDENTIALS = {
+    username: 'tone1234',
+    password: 'tone1234'
+  };
+
   // ─── AUTO-REDIRECT IF ACTIVE SESSION EXISTS ───
   try {
     const activeSession = localStorage.getItem(STORAGE_KEYS.session);
     if (activeSession) {
-      window.location.href = './dashboard/index.html';
+      window.location.href = '/members/dashboard';
     }
   } catch (e) {
     console.error('Session retrieval failed:', e);
@@ -52,25 +57,18 @@
       e.preventDefault();
       if (dom.loginError) dom.loginError.classList.remove('show');
 
-      const email = dom.loginEmail.value.trim();
-      const password = dom.loginPassword.value;
+      const username = dom.loginEmail.value.trim().toLowerCase();
+      const password = dom.loginPassword.value.trim().toLowerCase();
 
-      if (!email || !password) {
+      if (!username || !password) {
         showAuthError('Please enter both username/email and password.');
         return;
       }
 
-      const usernameLower = email.toLowerCase().trim();
-      const passwordUpper = password.toUpperCase().trim();
-
-      // Check for temporary preview or admin user on this portal
-      const isAdminUser = ['tone', 'admin', 'tone1234', 'admin@cbkitchen.io'].includes(usernameLower);
-      const isValidPassword = (passwordUpper === 'TONE1234' || passwordUpper === 'CBKITCHEN2026');
-
-      if (isAdminUser && isValidPassword) {
-        const previewUser = {
+      if (username === MEMBER_CREDENTIALS.username && password === MEMBER_CREDENTIALS.password) {
+        const memberUser = {
           name: 'Tone',
-          email: usernameLower.includes('@') ? usernameLower : `${usernameLower}@cbkitchen.io`,
+          email: `${MEMBER_CREDENTIALS.username}@cbkitchen.io`,
           company: 'Tone Sourcing & Development',
           status: 'Active',
           tier: 'Founding Member',
@@ -86,11 +84,11 @@
           submitBtn.classList.remove('loading');
           submitBtn.textContent = 'Sign In';
           
-          localStorage.setItem(STORAGE_KEYS.session, JSON.stringify(previewUser));
-          showToast('Preview Access Granted. Redirecting...');
+          localStorage.setItem(STORAGE_KEYS.session, JSON.stringify(memberUser));
+          showToast('Login successful! Redirecting...');
           
           setTimeout(() => {
-            window.location.href = './dashboard/index.html';
+            window.location.href = '/members/dashboard';
           }, 1000);
         }, 800);
         return;
@@ -98,14 +96,14 @@
 
       // Check in members database for custom-registered users
       const members = getDatabase(STORAGE_KEYS.members);
-      const user = members.find(m => m.email.toLowerCase() === usernameLower);
+      const user = members.find(m => String(m.email || '').trim().toLowerCase() === username);
 
       if (!user) {
         showAuthError('No member account found with this username/email.');
         return;
       }
 
-      if (user.password !== password) {
+      if (String(user.password || '').trim().toLowerCase() !== password) {
         showAuthError('Incorrect password. Please try again.');
         return;
       }
@@ -127,7 +125,7 @@
         showToast('Login successful! Redirecting...');
         
         setTimeout(() => {
-          window.location.href = './dashboard/index.html';
+          window.location.href = '/members/dashboard';
         }, 1000);
       }, 800);
     }
@@ -157,7 +155,7 @@
 
   // Event Listeners
   if (dom.loginForm) {
-    dom.loginForm.addEventListener('submit', CBAuth.handleLogin);
+    dom.loginForm.addEventListener('submit', window.CBAuth.handleLogin);
   }
 
 })();
