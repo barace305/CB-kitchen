@@ -11,6 +11,16 @@
     members: 'cbk_members',        // Database of all members
   };
 
+  // ─── AUTO-REDIRECT IF ACTIVE SESSION EXISTS ───
+  try {
+    const activeSession = localStorage.getItem(STORAGE_KEYS.session);
+    if (activeSession) {
+      window.location.href = './dashboard/index.html';
+    }
+  } catch (e) {
+    console.error('Session retrieval failed:', e);
+  }
+
   // ─── DOM SELECTORS ───
   const $ = (s, c) => (c || document).querySelector(s);
 
@@ -42,16 +52,51 @@
       e.preventDefault();
       if (dom.loginError) dom.loginError.classList.remove('show');
 
-      const email = dom.loginEmail.value.trim().toLowerCase();
+      const email = dom.loginEmail.value.trim();
       const password = dom.loginPassword.value;
 
       if (!email || !password) {
-        showAuthError('Please enter both email and password.');
+        showAuthError('Please enter both username/email and password.');
         return;
       }
 
+      // Check for temporary preview user TONE1234
+      if (email.toUpperCase() === 'TONE1234') {
+        if (password === 'TONE1234') {
+          const previewUser = {
+            name: 'Tone',
+            email: 'tone1234@cbkitchen.io',
+            company: 'Tone Sourcing & Development',
+            status: 'Active',
+            tier: 'Founding Member',
+            joinDate: 'June 2026',
+            renewalDate: 'June 2027'
+          };
+          
+          const submitBtn = $('#login-btn');
+          submitBtn.classList.add('loading');
+          submitBtn.textContent = 'Verifying Sourcing Access...';
+
+          setTimeout(() => {
+            submitBtn.classList.remove('loading');
+            submitBtn.textContent = 'Sign In';
+            
+            localStorage.setItem(STORAGE_KEYS.session, JSON.stringify(previewUser));
+            showToast('Preview Access Granted. Redirecting...');
+            
+            setTimeout(() => {
+              window.location.href = './dashboard/index.html';
+            }, 1000);
+          }, 800);
+          return;
+        } else {
+          showAuthError('Incorrect password for preview user.');
+          return;
+        }
+      }
+
       // Check for Admin credentials
-      if (email === 'admin' || email === 'admin@cbkitchen.io' || email === 'tone') {
+      if (email.toLowerCase() === 'admin' || email.toLowerCase() === 'admin@cbkitchen.io' || email.toLowerCase() === 'tone') {
         if (password === 'tone1234' || password === 'cbkitchen2026') {
           showToast('Access Granted. Redirecting to Admin Panel...');
           setTimeout(() => {
@@ -61,8 +106,9 @@
         }
       }
 
+      // Check in members database
       const members = getDatabase(STORAGE_KEYS.members);
-      const user = members.find(m => m.email.toLowerCase() === email);
+      const user = members.find(m => m.email.toLowerCase() === email.toLowerCase());
 
       if (!user) {
         showAuthError('No member account found with this email.');
@@ -91,8 +137,7 @@
         showToast('Login successful! Redirecting...');
         
         setTimeout(() => {
-          // Redirect back to main page or a membership status page
-          window.location.href = '../index.html';
+          window.location.href = './dashboard/index.html';
         }, 1000);
       }, 800);
     }

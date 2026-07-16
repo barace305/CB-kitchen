@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Sourcing Dashboard — CB Kitchen</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="icon" href="../../assets/images/logo.png" type="image/x-icon">
+</head>
+<body>
+
+  <!-- Ambient Luxury Backgrounds -->
+  <div class="luxury-bg-overlay"></div>
+  <div class="glow-sphere-1"></div>
+  <div class="glow-sphere-2"></div>
+
+  <!-- ── Dashboard Header ──────────────────────────────────────── -->
+  <header class="dashboard-header">
+    <div class="header-container">
+      <div class="header-left">
+        <a href="../../index.html" class="logo-link">
+          <img src="../../assets/images/logo.png" alt="CB Kitchen" class="dashboard-logo" onerror="this.style.display='none'">
+        </a>
+        <span class="divider"></span>
+        <div class="sourcing-network-badge">
+          <span class="glow-dot"></span>
+          <span>Private Sourcing Network</span>
+        </div>
+      </div>
+      
+      <div class="header-right">
+        <!-- Member Profile Dropdown Toggle -->
+        <div class="profile-container">
+          <button class="profile-toggle" id="profile-toggle-btn" aria-haspopup="true" aria-expanded="false">
+            <div class="avatar">T</div>
+            <div class="profile-meta">
+              <span class="user-name" id="user-name-display">Tone</span>
+              <span class="member-badge">Active</span>
+            </div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron-icon">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          
+          <!-- Dropdown Menu -->
+          <div class="profile-dropdown" id="profile-dropdown-menu">
+            <div class="dropdown-header">
+              <p class="company-name" id="user-company-display">Private Developer Sourcing</p>
+              <p class="member-tier" id="user-tier-display">Founding Member</p>
+            </div>
+            <ul class="dropdown-links">
+              <li>
+                <a href="#projects" class="nav-trigger" data-target="projects">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  <span>My Sourcing Projects</span>
+                </a>
+              </li>
+              <li>
+                <a href="#resources" class="nav-trigger" data-target="resources">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <span>Measurement Guides</span>
+                </a>
+              </li>
+              <li class="dropdown-divider"></li>
+              <li>
+                <button id="logout-btn" class="logout-action-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                  <span>Log Out</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle Navigation">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main Layout Workspace ──────────────────────────────────── -->
+  <div class="dashboard-workspace">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="dashboard-sidebar" id="dashboard-sidebar">
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a href="#overview" class="sidebar-link active" data-tab="overview">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#trending" class="sidebar-link" data-tab="trending">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>Trending Designs</span>
+            </a>
+          </li>
+          <li>
+            <a href="#catalog" class="sidebar-link" data-tab="catalog">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              <span>Design Catalog</span>
+            </a>
+          </li>
+          <li>
+            <a href="#custom-quote" class="sidebar-link" data-tab="custom-quote">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              <span>Custom Factory Quote</span>
+            </a>
+          </li>
+          <li>
+            <a href="#projects" class="sidebar-link" data-tab="projects">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <span>My Projects</span>
+            </a>
+          </li>
+          <li>
+            <a href="#resources" class="sidebar-link" data-tab="resources">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <span>Resources & Support</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <p class="license-info">CB Kitchen Partner ID</p>
+        <p class="license-value">CBK-2026-FNDR</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="dashboard-main-content">
+
+      <!-- ══════════════════════════════════════════════════════
+           TAB 1: DASHBOARD OVERVIEW
+           ══════════════════════════════════════════════════════ -->
+      <section class="tab-pane active" id="pane-overview">
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <span class="portal-greeting-label">Factory Sourcing Access</span>
+            <h1 class="welcome-title">Welcome Back, <span class="user-highlight-name">Tone</span></h1>
+            <p class="welcome-subtitle">Explore factory direct pricing, submit custom shop drawings, and track active production files in real-time.</p>
+          </div>
+          <div class="membership-card-badge">
+            <div class="badge-accent"></div>
+            <span class="badge-label">Active Sourcing Tier</span>
+            <span class="badge-tier">Founding Partner</span>
+          </div>
+        </div>
+
+        <!-- Quick Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-label">Active Projects</span>
+              <span class="stat-value" id="stat-active-projects">3</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-label">Quotes Under Review</span>
+              <span class="stat-value" id="stat-pending-quotes">1</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-label">Completed Files</span>
+              <span class="stat-value" id="stat-completed-projects">2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sourcing Workspace Quick Actions -->
+        <div class="dashboard-section-header">
+          <h2>Sourcing Dashboard Quick Actions</h2>
+          <span class="gold-bar"></span>
+        </div>
+
+        <div class="quick-actions-grid">
+          <button class="action-card" data-action="custom-quote">
+            <div class="action-glow"></div>
+            <div class="action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <h3>Submit Custom Shop Drawings</h3>
+            <p>Upload floor plans, elevations, and structural drawings for direct factory quotation.</p>
+          </button>
+          
+          <button class="action-card" data-action="catalog">
+            <div class="action-glow"></div>
+            <div class="action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            </div>
+            <h3>Explore Sourcing Catalog</h3>
+            <p>Browse our luxury design libraries for kitchens, bathrooms, and walk-in closets.</p>
+          </button>
+          
+          <button class="action-card" data-action="resources">
+            <div class="action-glow"></div>
+            <div class="action-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Measurement & Spec Guides</h3>
+            <p>Download measurement procedures, cabinet tolerance rules, and shipping templates.</p>
+          </button>
+        </div>
+
+        <!-- Mini Projects Tracker -->
+        <div class="dashboard-section-header">
+          <h2>Active Projects Overview</h2>
+          <span class="gold-bar"></span>
+        </div>
+        
+        <div class="overview-projects-list glass-panel" id="overview-projects-container">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+           TAB 2: TRENDING DESIGNS
+           ══════════════════════════════════════════════════════ -->
+      <section class="tab-pane" id="pane-trending">
+        <div class="section-intro">
+          <h1>Trending Design Collections</h1>
+          <p>Curated design styles and materials experiencing high demand across premium developer contracts this season.</p>
+          <span class="gold-divider"></span>
+        </div>
+
+        <!-- Trending Grid -->
+        <div class="trending-grid" id="trending-designs-container">
+          <!-- Dynamically Populated with 5 stunning design cards -->
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+           TAB 3: DESIGN CATALOG
+           ══════════════════════════════════════════════════════ -->
+      <section class="tab-pane" id="pane-catalog">
+        <div class="section-intro">
+          <h1>Curated Design Catalog</h1>
+          <p>Explore luxury factory-direct options across three major cabinetry product lines.</p>
+          <span class="gold-divider"></span>
+        </div>
+
+        <!-- Catalog Category Filter Tabs -->
+        <div class="catalog-filters">
+          <button class="filter-btn active" data-filter="all">All Collections</button>
+          <button class="filter-btn" data-filter="kitchen">Kitchens</button>
+          <button class="filter-btn" data-filter="bath">Bathroom Vanities</button>
+          <button class="filter-btn" data-filter="closet">Walk-In Closets</button>
+        </div>
+
+        <!-- Catalog Grid -->
+        <div class="catalog-grid" id="catalog-products-container">
+          <!-- Dynamically Populated -->
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+           TAB 4: CUSTOM FACTORY QUOTE FORM
+           ══════════════════════════════════════════════════════ -->
+      <section class="tab-pane" id="pane-custom-quote">
+        <div class="section-intro">
+          <h1>Custom Factory Sourcing Request</h1>
+          <p>Submit architectural shop files, plans, or sketch templates to our engineering team for a direct cost breakdown.</p>
+          <span class="gold-divider"></span>
+        </div>
+
+        <div class="custom-quote-wrapper glass-panel">
+          <form id="custom-quote-form" autocomplete="off" novalidate>
+            <!-- Form Header & Progress Bar -->
+            <div class="form-progress-container">
+              <div class="progress-step active" data-step="1">1. Project Info</div>
+              <div class="progress-step" data-step="2">2. Materials & Specs</div>
+              <div class="progress-step" data-step="3">3. File Upload & Submit</div>
+              <div class="progress-bar">
+                <div class="progress-bar-fill" id="form-progress-bar"></div>
+              </div>
+            </div>
+
+            <!-- STEP 1: Project Info -->
+            <div class="form-step-pane active" data-step-pane="1">
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label for="project-name">Project Name / Reference</label>
+                  <input type="text" id="project-name" placeholder="e.g., Brentwood Estate Master Suite" required>
+                </div>
+                <div class="form-group">
+                  <label for="project-type">Project Space Category</label>
+                  <select id="project-type" required>
+                    <option value="" disabled selected>Select category...</option>
+                    <option value="kitchen">Full Custom Kitchen</option>
+                    <option value="bath">Luxury Vanity Suite</option>
+                    <option value="closet">Walk-In Closet Configuration</option>
+                    <option value="multi">Multi-Unit Residential Package</option>
+                    <option value="commercial">Commercial Cabinetry Package</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label for="project-city">Project City & State</label>
+                  <input type="text" id="project-city" placeholder="e.g., Beverly Hills, CA" required>
+                </div>
+                <div class="form-group">
+                  <label for="project-timeline">Target Sourcing Timeline</label>
+                  <select id="project-timeline" required>
+                    <option value="" disabled selected>Select timeline...</option>
+                    <option value="immediate">Immediate Production (4-6 weeks)</option>
+                    <option value="soon">Near-term Sourcing (8-12 weeks)</option>
+                    <option value="planning">Pre-construction / Estimating Phase</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-navigation">
+                <button type="button" class="btn-next btn-primary">Continue to Specs</button>
+              </div>
+            </div>
+
+            <!-- STEP 2: Materials & Specs -->
+            <div class="form-step-pane" data-step-pane="2">
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label for="core-material">Cabinet Core Box Construction</label>
+                  <select id="core-material">
+                    <option value="plywood-premium" selected>Marine-Grade Multi-layer Plywood (Recommended)</option>
+                    <option value="plywood-standard">A-Grade Core Plywood</option>
+                    <option value="mdf-ref">E1 High-Density Moisture Resistant MDF</option>
+                    <option value="solid-wood">Pure Solid Wood Frame & Box</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="hardware-type">Hardware Runner Systems</label>
+                  <select id="hardware-type">
+                    <option value="blum-motion" selected>Blumotion Soft-Close (Full Extension)</option>
+                    <option value="salice-push">Salice Push-To-Open Silent</option>
+                    <option value="hettich-sync">Hettich Integrated Synchronization</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label for="finish-preference">Preferred Finish Material</label>
+                  <select id="finish-preference">
+                    <option value="veneer">Real Wood Veneer (Oak/Walnut)</option>
+                    <option value="lacquer-matte">Premium Matte Lacquer</option>
+                    <option value="lacquer-gloss">High-Gloss Polyester Lacquer</option>
+                    <option value="textured-melamine">Textured Italian Melamine</option>
+                    <option value="solid-timber">Solid Painted Timber</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="budget-range">Estimated Sourcing Budget ($)</label>
+                  <select id="budget-range">
+                    <option value="under-10k">Under $10,000</option>
+                    <option value="10k-25k" selected>$10,000 - $25,000</option>
+                    <option value="25k-50k">$25,000 - $50,000</option>
+                    <option value="50k-100k">$50,000 - $100,000</option>
+                    <option value="over-100k">$100,000+ (Factory Wholesale Pack)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-navigation">
+                <button type="button" class="btn-prev btn-secondary">Back</button>
+                <button type="button" class="btn-next btn-primary">Continue to Upload</button>
+              </div>
+            </div>
+
+            <!-- STEP 3: File Upload & Submit -->
+            <div class="form-step-pane" data-step-pane="3">
+              <div class="form-group">
+                <label>Drag & Drop Shop Drawings / Layouts</label>
+                <div class="file-drop-zone" id="file-drop-zone">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="upload-icon">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                  <p class="drop-zone-text">Drag and drop CAD PDF drawings, blueprints, or sketches here</p>
+                  <p class="drop-zone-sub">or click to browse local files (PDF, DWG, PNG, JPG up to 25MB)</p>
+                  <input type="file" id="custom-file-input" multiple style="display: none;">
+                </div>
+                <div class="file-list-preview" id="file-list-preview"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="project-notes">Additional Technical Notes / Custom Requests</label>
+                <textarea id="project-notes" rows="4" placeholder="Detail any custom tolerances, dimensions, custom accessories, or finish combinations..."></textarea>
+              </div>
+
+              <div class="form-navigation">
+                <button type="button" class="btn-prev btn-secondary">Back</button>
+                <button type="submit" class="btn-submit btn-primary" id="form-submit-btn">Submit Factory Request</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+           TAB 5: MY PROJECTS (PROJECT TRACKER)
+           ══════════════════════════════════════════════════════ -->
+      <section class="tab-pane" id="pane-projects">
+        <div class="section-intro">
+          <h1>Sourcing Projects Tracker</h1>
+          <p>Track the progress of your factory sourcing orders, from engineering review to factory delivery.</p>
+          <span class="gold-divider"></span>
+        </div>
+
+        <!-- Filter Statuses -->
+        <div class="tracker-filters">
+          <button class="status-filter-btn active" data-status="all">All Files</button>
+          <button class="status-filter-btn" data-status="submitted">Reviewing</button>
+          <button class="status-filter-btn" data-status="quoted">Quotes Ready</button>
+          <button class="status-filter-btn" data-status="production">In Production</button>
+          <button class="status-filter-btn" data-status="completed">Shipped</button>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid" id="projects-tracker-container">
+          <!-- Dynamically populated list of detailed project cards -->
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+           TAB 6: RESOURCES & SUPPORT
+           ══════════════════════════════════════════════════════ -->
+      <section class="tab-pane" id="pane-resources">
+        <div class="section-intro">
+          <h1>Resources & Private Support</h1>
+          <p>Technical reference documents and direct sourcing communications desk.</p>
+          <span class="gold-divider"></span>
+        </div>
+
+        <div class="resources-layout">
+          <!-- Left Column: Downloads & Guides -->
+          <div class="resources-left">
+            <div class="dashboard-section-header">
+              <h2>Technical Sourcing Guides</h2>
+              <span class="gold-bar"></span>
+            </div>
+
+            <div class="resources-grid">
+              <div class="resource-card glass-panel">
+                <div class="resource-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <div class="resource-info">
+                  <h3>Cabinetry Sizing & Metric Standards</h3>
+                  <p>Comprehensive layout sizes, wall filler guidelines, and installation tolerances. PDF (4.2 MB)</p>
+                  <a href="#" class="download-link" data-file="sizing-guide">
+                    <span>Download PDF</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="resource-card glass-panel">
+                <div class="resource-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <div class="resource-info">
+                  <h3>Measurement Template Sheet</h3>
+                  <p>Laser mapping grid, layout templates, and plumbing location indicators. PDF (1.8 MB)</p>
+                  <a href="#" class="download-link" data-file="measurement-sheet">
+                    <span>Download PDF</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="resource-card glass-panel">
+                <div class="resource-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <div class="resource-info">
+                  <h3>Factory Sourcing Terms & Shipping</h3>
+                  <p>Freight delivery guidelines, flat-pack logistics, and import tax rates. PDF (2.1 MB)</p>
+                  <a href="#" class="download-link" data-file="shipping-terms">
+                    <span>Download PDF</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQs Accordion -->
+            <div class="dashboard-section-header" style="margin-top: 40px;">
+              <h2>Frequently Answered Questions</h2>
+              <span class="gold-bar"></span>
+            </div>
+
+            <div class="faq-accordion">
+              <div class="faq-item">
+                <button class="faq-question">
+                  <span>What is the standard manufacturing lead time?</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="accordion-arrow"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                  <p>Our average production lead time is 6 to 8 weeks from the moment CAD drawings are signed off and the initial deposit clears. Large-scale residential projects may require 10 to 12 weeks depending on specialized timber requirements.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <button class="faq-question">
+                  <span>How are shipping and customs handled?</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="accordion-arrow"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                  <p>CB Kitchen provides DDP (Delivered Duty Paid) shipping options directly to your building site. We coordinate standard maritime freight, clear imports, and schedule flatbed carriage. Detailed logistics are available in our shipping terms.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <button class="faq-question">
+                  <span>Can I request bespoke materials not listed in the swatches?</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="accordion-arrow"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                  <p>Yes. If your architectural drawings call for specific custom stone panels, specialized metal frames, or custom color-matching, please note this in the custom request form or consult your direct sourcing agent.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Sourcing Desk Contact -->
+          <div class="resources-right">
+            <div class="dashboard-section-header">
+              <h2>Direct Sourcing Agent Desk</h2>
+              <span class="gold-bar"></span>
+            </div>
+
+            <div class="sourcing-agent-card glass-panel">
+              <div class="agent-profile">
+                <div class="agent-avatar">EA</div>
+                <div class="agent-details">
+                  <h4>Engineering & Sourcing Division</h4>
+                  <p>Dedicated Partner Support Desk</p>
+                </div>
+              </div>
+              
+              <div class="agent-meta">
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  <span>sourcing@cbkitchen.io</span>
+                </div>
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <span>+1 (888) 555-CBK-LINE</span>
+                </div>
+              </div>
+
+              <!-- Message Form -->
+              <form id="agent-message-form" class="agent-form" autocomplete="off">
+                <div class="form-group">
+                  <label for="agent-subject">Subject</label>
+                  <input type="text" id="agent-subject" placeholder="e.g., Sizing inquiry on Brentwood design" required>
+                </div>
+                <div class="form-group">
+                  <label for="agent-message">Your Message</label>
+                  <textarea id="agent-message" rows="4" placeholder="Type your inquiry here..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary" id="btn-agent-send">Send Direct Message</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ── Detail View Modal ──────────────────────────────────────── -->
+  <div class="modal-overlay" id="catalog-detail-modal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="modal-close" aria-label="Close modal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      
+      <div class="modal-body-split">
+        <!-- Left: Image Gallery & Specs -->
+        <div class="modal-visual-column">
+          <img src="" id="modal-product-image" class="modal-hero-image" alt="Luxury Sourcing File">
+          
+          <div class="spec-swatch-list">
+            <h4>Luxury Finished Swatches</h4>
+            <div class="swatches-row">
+              <span class="swatch-item color-oak active" data-swatch="Natural European Oak" title="Natural European Oak"></span>
+              <span class="swatch-item color-lacquer" data-swatch="Matte Black Lacquer" title="Matte Black Lacquer"></span>
+              <span class="swatch-item color-walnut" data-swatch="Muted Walnut Veneer" title="Muted Walnut Veneer"></span>
+              <span class="swatch-item color-brass" data-swatch="Brushed Champagne Brass" title="Brushed Champagne Brass"></span>
+            </div>
+            <p class="selected-swatch-label">Selected: <span id="active-swatch-name">Natural European Oak</span></p>
+          </div>
+        </div>
+        
+        <!-- Right: Technical Details -->
+        <div class="modal-details-column">
+          <span class="modal-tag" id="modal-product-tag">Category</span>
+          <h2 class="modal-product-title" id="modal-product-title">Luxury Suite</h2>
+          <p class="modal-product-description" id="modal-product-desc">Technical description goes here.</p>
+          
+          <div class="tech-spec-table">
+            <div class="spec-row">
+              <span class="spec-label">Internal Carcass</span>
+              <span class="spec-val" id="spec-carcass">18mm Plywood / Lacquered Box</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Runner Systems</span>
+              <span class="spec-val" id="spec-runners">Blum Motion Integrated Soft-Close</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Warranty</span>
+              <span class="spec-val" id="spec-warranty">10-Year Factory Sourcing Defect</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Pricing Tier</span>
+              <span class="spec-val highlight-val" id="spec-price">$8,500 - $14,000 (Factory direct)</span>
+            </div>
+          </div>
+          
+          <div class="modal-action-row">
+            <button class="btn-primary" id="modal-quote-trigger-btn">Initialize Sourcing Quote</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Custom Quote Wizard Modal ──────────────────────────────── -->
+  <div class="modal-overlay" id="quote-wizard-modal" role="dialog" aria-modal="true">
+    <div class="modal-card max-w-600">
+      <button class="modal-close" aria-label="Close modal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="wizard-header">
+        <h2>Request Collection Pricing</h2>
+        <p id="wizard-design-reference">Design Style: Brentwood Estate Suite</p>
+      </div>
+
+      <form id="wizard-quote-form" class="wizard-form" autocomplete="off" novalidate>
+        <!-- Step Indicator -->
+        <div class="wizard-steps-indicator">
+          <span class="wiz-step active" id="wiz-step-lbl-1">Dimensions</span>
+          <span class="wiz-step" id="wiz-step-lbl-2">Preferences</span>
+          <span class="wiz-step" id="wiz-step-lbl-3">Submit</span>
+        </div>
+
+        <!-- Section 1: Dimensions -->
+        <div class="wizard-section active" data-wiz-pane="1">
+          <div class="form-group">
+            <label for="wiz-room-size">Approximate Space Layout Size</label>
+            <select id="wiz-room-size" required>
+              <option value="" disabled selected>Select size category...</option>
+              <option value="small">Compact Space (under 15 linear feet)</option>
+              <option value="medium" selected>Standard Kitchen/Suite (15 - 30 linear feet)</option>
+              <option value="large">Grand Room / Custom Mansion (30+ linear feet)</option>
+            </select>
+          </div>
+
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="wiz-layout-type">Layout Configuration</label>
+              <select id="wiz-layout-type">
+                <option value="galley">Galley / Parallel Walls</option>
+                <option value="l-shape" selected>L-Shape with Center Island</option>
+                <option value="u-shape">U-Shape Layout</option>
+                <option value="custom">Straight Wall + Dynamic Accents</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="wiz-timeline">Delivery Timeline</label>
+              <select id="wiz-timeline">
+                <option value="fast">Immediate (4-6 weeks)</option>
+                <option value="standard" selected>Standard (8-12 weeks)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="wizard-navigation">
+            <button type="button" class="btn-wiz-next btn-primary">Select Preferences</button>
+          </div>
+        </div>
+
+        <!-- Section 2: Preferences -->
+        <div class="wizard-section" data-wiz-pane="2">
+          <div class="form-group">
+            <label for="wiz-finish">Preferred Exterior Cabinet Finish</label>
+            <select id="wiz-finish">
+              <option value="Natural European Oak" selected>Natural European Oak Veneer</option>
+              <option value="Matte Black Lacquer">Matte Black Lacquer</option>
+              <option value="Muted Walnut Veneer">Muted Walnut Veneer</option>
+              <option value="Brushed Champagne Brass">Brushed Champagne Brass Accents</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="wiz-drawers">Internal Drawer Box Selection</label>
+            <select id="wiz-drawers">
+              <option value="wood-dovetail" selected>Solid Timber Dovetail Drawer Boxes</option>
+              <option value="metal-box">Double-Wall Metal Drawer Side Plates</option>
+            </select>
+          </div>
+
+          <div class="wizard-navigation">
+            <button type="button" class="btn-wiz-prev btn-secondary">Back</button>
+            <button type="button" class="btn-wiz-next btn-primary">File Submission</button>
+          </div>
+        </div>
+
+        <!-- Section 3: Submit -->
+        <div class="wizard-section" data-wiz-pane="3">
+          <div class="form-group">
+            <label>Attach Layout Drawing (Optional)</label>
+            <div class="file-drop-zone" id="wiz-drop-zone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="upload-icon-small">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <p class="drop-zone-text text-sm">Drag and drop layout blueprint or sketch PDF here</p>
+              <input type="file" id="wiz-file-input" style="display: none;">
+            </div>
+            <div class="file-list-preview" id="wiz-file-preview"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="wiz-notes">Specific Requests / Custom Fit Notes</label>
+            <textarea id="wiz-notes" rows="3" placeholder="Provide any specifications, island dimensions, appliance openings..."></textarea>
+          </div>
+
+          <div class="wizard-navigation">
+            <button type="button" class="btn-wiz-prev btn-secondary">Back</button>
+            <button type="submit" class="btn-submit btn-primary" id="wiz-submit-btn">Send Sourcing File</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <div class="toast-icon">
+      <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <p id="toast-message" class="toast-message"></p>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/dashboard.js?v=4.0"></script>
+</body>
+</html>
