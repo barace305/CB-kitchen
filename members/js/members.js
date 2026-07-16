@@ -62,7 +62,7 @@
 
       // Check for temporary preview user TONE1234
       if (email.toUpperCase() === 'TONE1234') {
-        if (password === 'TONE1234') {
+        if (password.toUpperCase() === 'TONE1234') {
           const previewUser = {
             name: 'Tone',
             email: 'tone1234@cbkitchen.io',
